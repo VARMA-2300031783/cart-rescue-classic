@@ -4,6 +4,41 @@ import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag,
 const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
+  // Home Appliances (Refrigerators, Washing Machines, ACs)
+  {
+    id: 501,
+    name: 'Samsung 580L Double Door Convertible Refrigerator',
+    category: 'Appliances',
+    subCategory: 'Refrigerators',
+    brand: 'Samsung',
+    price: 899.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=600&q=80',
+    description: 'Frost-free double door refrigerator with Twin Cooling Plus technology and digital inverter compressor.'
+  },
+  {
+    id: 502,
+    name: 'LG 8kg Front Load Smart Inverter Washing Machine',
+    category: 'Appliances',
+    subCategory: 'Washing Machines',
+    brand: 'LG',
+    price: 649.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80',
+    description: 'AI Direct Drive washer with steam hygiene wash and TurboWash 360° technology.'
+  },
+  {
+    id: 503,
+    name: 'Daikin 1.5 Ton 5-Star Inverter Split AC',
+    category: 'Appliances',
+    subCategory: 'Air Conditioners',
+    brand: 'Daikin',
+    price: 749.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80',
+    description: '3D airflow inverter split AC with PM 2.5 filter and dew clean technology.'
+  },
+
   // Branded Jeans
   {
     id: 301,
@@ -88,17 +123,6 @@ const PRODUCTS = [
     image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
     description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
   },
-  {
-    id: 308,
-    name: 'Calvin Klein Thermal Full Sleeve T-Shirt',
-    category: 'Fashion',
-    subCategory: 'Full Sleeve T-Shirts',
-    brand: 'Calvin Klein',
-    price: 49.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
-    description: 'Soft stretch cotton full sleeve crewneck with subtle CK chest logo.'
-  },
 
   // Electronics
   {
@@ -106,20 +130,11 @@ const PRODUCTS = [
     name: 'Sony WH-1000XM5 Wireless Headphones',
     category: 'Electronics',
     subCategory: 'Headphones',
+    brand: 'Sony',
     price: 349.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
     description: 'Industry-leading noise canceling headphones with dual processors and 30hr battery.'
-  },
-  {
-    id: 102,
-    name: 'Bose SoundLink Portable Speaker',
-    category: 'Electronics',
-    subCategory: 'Speakers',
-    price: 149.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80',
-    description: 'Deep, immersive 360° sound in a water-resistant aluminum body.'
   },
   
   // Mobiles
@@ -128,6 +143,7 @@ const PRODUCTS = [
     name: 'iPhone 15 Pro Max Titanium',
     category: 'Mobiles',
     subCategory: 'Smartphones',
+    brand: 'Apple',
     price: 1199.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80',
@@ -138,6 +154,7 @@ const PRODUCTS = [
     name: 'Samsung Galaxy S24 Ultra 5G',
     category: 'Mobiles',
     subCategory: 'Smartphones',
+    brand: 'Samsung',
     price: 1299.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80',
@@ -150,20 +167,11 @@ const PRODUCTS = [
     name: 'Swiss Dark Chocolate Truffles Box',
     category: 'Chocolates',
     subCategory: 'Truffles',
+    brand: 'Lindt',
     price: 45.00,
     rating: 5.0,
     image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80',
     description: '24-piece artisan truffles crafted with 70% Single-Origin cocoa & ganache.'
-  },
-  {
-    id: 402,
-    name: 'Artisan Roasted Hazelnut Pralines',
-    category: 'Chocolates',
-    subCategory: 'Pralines',
-    price: 38.00,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=600&q=80',
-    description: 'Caramelized Piedmont hazelnuts coated in creamy Belgian milk chocolate.'
   }
 ];
 
@@ -184,7 +192,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     phone: '+1 (555) 333-4444'
   });
 
-  const categories = ['All', 'Fashion', 'Electronics', 'Mobiles', 'Chocolates'];
+  const categories = ['All', 'Appliances', 'Fashion', 'Mobiles', 'Electronics', 'Chocolates'];
 
   const filteredProducts = selectedCategory === 'All' 
     ? PRODUCTS 
@@ -236,10 +244,10 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
-              Branded Fashion & Lifestyle Marketplace
+              Premium Indian Superstore
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore Levi's, Ralph Lauren, Tommy Hilfiger, Nike & Adidas.
+              Explore Appliances (Refrigerators, Washing Machines, ACs), Fashion & Tech.
             </p>
           </div>
 
