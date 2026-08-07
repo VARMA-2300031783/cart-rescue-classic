@@ -1,42 +1,94 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
 const PRODUCTS = [
+  // Electronics
   {
-    id: 1,
-    name: 'Classic Leather Tote Bag',
-    category: 'Accessories',
-    price: 129.00,
+    id: 101,
+    name: 'Sony WH-1000XM5 Wireless Headphones',
+    category: 'Electronics',
+    price: 349.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80',
-    description: 'Handcrafted premium leather bag with durable brass hardware.'
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
+    description: 'Industry-leading noise canceling headphones with dual processors and 30hr battery.'
   },
   {
-    id: 2,
-    name: 'Minimalist Wrist Watch',
-    category: 'Watches',
+    id: 102,
+    name: 'Bose SoundLink Portable Speaker',
+    category: 'Electronics',
+    price: 149.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=600&q=80',
+    description: 'Deep, immersive 360° sound in a water-resistant aluminum body.'
+  },
+  
+  // Mobiles
+  {
+    id: 201,
+    name: 'iPhone 15 Pro Max (256GB Titanium)',
+    category: 'Mobiles',
+    price: 1199.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80',
+    description: 'A17 Pro chip, Aerospace-grade titanium design, and 5x Telephoto camera.'
+  },
+  {
+    id: 202,
+    name: 'Samsung Galaxy S24 Ultra 5G',
+    category: 'Mobiles',
+    price: 1299.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80',
+    description: 'Galaxy AI features, integrated S Pen, and 200MP camera resolution.'
+  },
+
+  // Fashion
+  {
+    id: 301,
+    name: 'Classic Biker Leather Jacket',
+    category: 'Fashion',
+    price: 249.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
+    description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
+  },
+  {
+    id: 302,
+    name: 'Designer Italian Polarized Sunglasses',
+    category: 'Fashion',
+    price: 159.00,
+    rating: 4.7,
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80',
+    description: 'Hand-crafted acetate frame with UV400 anti-glare polarized lenses.'
+  },
+  {
+    id: 303,
+    name: 'Classic Silk Printed Scarf',
+    category: 'Fashion',
     price: 89.00,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80',
-    description: 'Sleek stainless steel watch with scratch-resistant sapphire crystal.'
+    image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80',
+    description: 'Pure Mulberry silk scarf with hand-rolled edges and vibrant motif.'
   },
+
+  // Chocolates
   {
-    id: 3,
-    name: 'Ergonomic Wooden Desk Chair',
-    category: 'Furniture',
-    price: 249.00,
+    id: 401,
+    name: 'Swiss Dark Chocolate Truffles Box',
+    category: 'Chocolates',
+    price: 45.00,
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1580481072645-022f9a6d1290?auto=format&fit=crop&w=600&q=80',
-    description: 'Comfortable lumbar support crafted from oak and breathable mesh.'
+    image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80',
+    description: '24-piece artisan truffles crafted with 70% Single-Origin cocoa & ganache.'
   },
   {
-    id: 4,
-    name: 'Wireless Noise Canceling Headphones',
-    category: 'Electronics',
-    price: 179.00,
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
-    description: 'Immersive sound quality with 30-hour battery life and soft ear cushions.'
+    id: 402,
+    name: 'Artisan Roasted Hazelnut Pralines',
+    category: 'Chocolates',
+    price: 38.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
+    description: 'Caramelized Piedmont hazelnuts coated in creamy Belgian milk chocolate.'
   }
 ];
 
@@ -48,6 +100,7 @@ const SAMPLE_CUSTOMERS = [
 ];
 
 export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, onCheckoutSuccess, promoCode, discountPercent }) {
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [showExitNotice, setShowExitNotice] = useState(false);
   const [sessionSignal, setSessionSignal] = useState('hasPaymentError');
   const [customerInfo, setCustomerInfo] = useState({
@@ -55,6 +108,12 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     email: 'robert.fox@example.com',
     phone: '+1 (555) 333-4444'
   });
+
+  const categories = ['All', 'Electronics', 'Mobiles', 'Fashion', 'Chocolates'];
+
+  const filteredProducts = selectedCategory === 'All' 
+    ? PRODUCTS 
+    : PRODUCTS.filter(p => p.category === selectedCategory);
 
   const addToCart = (product) => {
     setCartItems(prev => {
@@ -94,17 +153,40 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 370px', gap: '2rem' }}>
       {/* Product Catalog */}
       <div>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
-            Classic Goods Store
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Select items to add to your shopping cart. Test AI session signals (Payment failure, Shipping cost, Price shopping).
-          </p>
+        <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
+              Premium Indian Marketplace
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+              Explore Electronics, Mobiles, Fashion & Gourmet Chocolates.
+            </p>
+          </div>
+
+          {/* Category Filter Pills */}
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', background: '#ffffff', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                style={{
+                  padding: '0.45rem 0.9rem',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  background: selectedCategory === cat ? 'var(--accent-gold)' : 'transparent',
+                  color: selectedCategory === cat ? '#ffffff' : 'var(--text-muted)'
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Product Cards Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.5rem' }}>
-          {PRODUCTS.map(product => (
+          {filteredProducts.map(product => (
             <div key={product.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <div style={{ height: '180px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1rem', position: 'relative' }}>
                 <img 
@@ -115,18 +197,19 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 <span className="badge badge-gold" style={{ position: 'absolute', top: '10px', left: '10px' }}>
                   ★ {product.rating}
                 </span>
+                <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.75)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
+                  {product.category}
+                </span>
               </div>
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)', textTransform: 'uppercase', fontWeight: 600 }}>
-                {product.category}
-              </span>
-              <h3 style={{ fontSize: '1.1rem', margin: '0.3rem 0', color: 'var(--text-main)' }}>
+
+              <h3 style={{ fontSize: '1.05rem', margin: '0.2rem 0 0.4rem 0', color: 'var(--text-main)', fontWeight: 700 }}>
                 {product.name}
               </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem', flex: 1 }}>
+              <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', marginBottom: '1rem', flex: 1, lineHeight: 1.4 }}>
                 {product.description}
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-gold)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '0.8rem' }}>
+                <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-gold)' }}>
                   ${product.price.toFixed(2)}
                 </span>
                 <button
@@ -153,7 +236,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           </span>
         </div>
 
-        {/* Customer Information Editable Form */}
+        {/* Customer Information Form */}
         <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '0.9rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
           <div style={{ color: 'var(--accent-gold)', marginBottom: '0.6rem', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <User size={15} /> Customer Details:
@@ -215,15 +298,15 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           </div>
         ) : (
           <div>
-            <div style={{ maxHeight: '180px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
+            <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
               {cartItems.map(item => (
                 <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', background: '#f8fafc', padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #f1f5f9' }}>
                   <img src={item.image} alt={item.name} style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whitespace: 'nowrap' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whitespace: 'nowrap' }}>
                       {item.name}
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                       Qty: {item.quantity} × ${item.price.toFixed(2)}
                     </div>
                   </div>
