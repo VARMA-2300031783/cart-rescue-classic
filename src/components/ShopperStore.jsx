@@ -4,14 +4,14 @@ import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag,
 const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
-  // Chocolates Collection (Dairy Milk, Snickers, 5 Star, Kisses, Dark Chocolate)
+  // Chocolates Collection
   {
     id: 401,
     name: 'Cadbury Dairy Milk Silk Chocolate Bar',
     category: 'Chocolates',
     subCategory: 'Milk Chocolate',
     brand: 'Cadbury',
-    price: 12.00,
+    price: 180.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80',
     description: 'Smooth and creamy premium milk chocolate bar crafted with rich cocoa.'
@@ -22,7 +22,7 @@ const PRODUCTS = [
     category: 'Chocolates',
     subCategory: 'Snack Bars',
     brand: 'Snickers',
-    price: 15.00,
+    price: 240.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=600&q=80',
     description: 'Roasted peanuts, caramel, and nougat coated in delicious milk chocolate.'
@@ -33,7 +33,7 @@ const PRODUCTS = [
     category: 'Chocolates',
     subCategory: 'Caramel Bars',
     brand: 'Cadbury',
-    price: 8.00,
+    price: 60.00,
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=600&q=80',
     description: 'Chewy caramel and soft chocolate nougat wrapped in milk chocolate.'
@@ -44,7 +44,7 @@ const PRODUCTS = [
     category: 'Chocolates',
     subCategory: 'Bite-Sized',
     brand: "Hershey's",
-    price: 18.00,
+    price: 290.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
     description: 'Iconic tear-drop shaped bite-sized milk chocolates individually foil-wrapped.'
@@ -55,7 +55,7 @@ const PRODUCTS = [
     category: 'Chocolates',
     subCategory: 'Dark Chocolate',
     brand: 'Lindt',
-    price: 22.00,
+    price: 350.00,
     rating: 5.0,
     image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80',
     description: 'Full-bodied 85% cocoa dark chocolate with notes of roasted coffee and vanilla.'
@@ -68,7 +68,7 @@ const PRODUCTS = [
     category: 'Appliances',
     subCategory: 'Air Conditioners',
     brand: 'Daikin',
-    price: 749.00,
+    price: 44990.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=600&q=80',
     description: '3D airflow wall-mounted inverter split air conditioner with PM 2.5 filter.'
@@ -79,7 +79,7 @@ const PRODUCTS = [
     category: 'Appliances',
     subCategory: 'Air Conditioners',
     brand: 'Voltas',
-    price: 499.00,
+    price: 28990.00,
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80',
     description: 'High-ambient cooling turbo window air conditioner with copper condenser.'
@@ -92,7 +92,7 @@ const PRODUCTS = [
     category: 'Appliances',
     subCategory: 'Refrigerators',
     brand: 'Samsung',
-    price: 899.00,
+    price: 58990.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=600&q=80',
     description: 'Frost-free double door stainless steel refrigerator with Twin Cooling Plus.'
@@ -103,7 +103,7 @@ const PRODUCTS = [
     category: 'Appliances',
     subCategory: 'Washing Machines',
     brand: 'LG',
-    price: 649.00,
+    price: 34990.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80',
     description: 'AI Direct Drive washer with steam hygiene wash and TurboWash 360° technology.'
@@ -116,7 +116,7 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Jeans',
     brand: "Levi's",
-    price: 79.00,
+    price: 3999.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80',
     description: "Iconic Levi's 501 straight-leg stretch denim with signature leather patch."
@@ -127,7 +127,7 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Jeans',
     brand: 'Wrangler',
-    price: 64.00,
+    price: 2499.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1582552938357-32b906df40cb?auto=format&fit=crop&w=600&q=80',
     description: 'Durable heavyweight cotton denim with comfort flex waistband.'
@@ -140,7 +140,7 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Shirts',
     brand: 'Polo Ralph Lauren',
-    price: 98.00,
+    price: 7999.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
     description: 'Signature embroidered pony logo on 100% breathable Oxford cotton.'
@@ -151,7 +151,7 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Shirts',
     brand: 'Tommy Hilfiger',
-    price: 85.00,
+    price: 4499.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
     description: 'Classic American heritage checked cotton shirt with flag logo embroidery.'
@@ -164,7 +164,7 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Round Neck T-Shirts',
     brand: 'Nike',
-    price: 35.00,
+    price: 1995.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
     description: 'Heavyweight organic cotton round neck t-shirt with classic Swoosh logo.'
@@ -175,10 +175,23 @@ const PRODUCTS = [
     category: 'Fashion',
     subCategory: 'Round Neck T-Shirts',
     brand: 'Adidas',
-    price: 32.00,
+    price: 1799.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
     description: 'Soft single jersey cotton round neck t-shirt featuring the iconic Trefoil logo.'
+  },
+
+  // Jackets
+  {
+    id: 307,
+    name: 'Classic Biker Lambskin Leather Jacket',
+    category: 'Fashion',
+    subCategory: 'Jackets',
+    brand: 'Jack & Jones',
+    price: 9999.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
+    description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
   },
 
   // Electronics & Mobiles
@@ -188,18 +201,18 @@ const PRODUCTS = [
     category: 'Electronics',
     subCategory: 'Headphones',
     brand: 'Sony',
-    price: 349.00,
+    price: 24990.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
     description: 'Industry-leading noise canceling headphones with dual processors and 30hr battery.'
   },
   {
     id: 201,
-    name: 'iPhone 15 Pro Max Titanium',
+    name: 'iPhone 15 Pro Max Titanium (256GB)',
     category: 'Mobiles',
     subCategory: 'Smartphones',
     brand: 'Apple',
-    price: 1199.00,
+    price: 134900.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80',
     description: 'A17 Pro chip, Aerospace-grade titanium design, and 5x Telephoto camera.'
@@ -207,10 +220,10 @@ const PRODUCTS = [
 ];
 
 const SAMPLE_CUSTOMERS = [
-  { name: 'Robert Fox', email: 'robert.fox@example.com', phone: '+1 (555) 333-4444' },
-  { name: 'Emily Clark', email: 'emily.c@example.com', phone: '+1 (555) 777-8888' },
-  { name: 'Michael Scott', email: 'michael.s@example.com', phone: '+1 (555) 999-0000' },
-  { name: 'Alex Morgan', email: 'alex.m@example.com', phone: '+1 (555) 987-6543' }
+  { name: 'Robert Fox', email: 'robert.fox@example.com', phone: '+91 98765 43210' },
+  { name: 'Emily Clark', email: 'emily.c@example.com', phone: '+91 98765 12345' },
+  { name: 'Michael Scott', email: 'michael.s@example.com', phone: '+91 98765 67890' },
+  { name: 'Alex Morgan', email: 'alex.m@example.com', phone: '+91 98765 11223' }
 ];
 
 export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, onCheckoutSuccess, promoCode, discountPercent }) {
@@ -220,7 +233,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
   const [customerInfo, setCustomerInfo] = useState({
     name: 'Robert Fox',
     email: 'robert.fox@example.com',
-    phone: '+1 (555) 333-4444'
+    phone: '+91 98765 43210'
   });
 
   const categories = ['All', 'Chocolates', 'Appliances', 'Fashion', 'Mobiles', 'Electronics'];
@@ -257,7 +270,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     onAbandonCart({
       customerName: customerInfo.name || 'Valued Customer',
       customerEmail: customerInfo.email || 'customer@example.com',
-      customerPhone: customerInfo.phone || '+1 (555) 000-0000',
+      customerPhone: customerInfo.phone || '+91 98765 00000',
       items: cartItems,
       totalValue: subtotal,
       hasPaymentError: sessionSignal === 'hasPaymentError',
@@ -278,7 +291,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               Premium Indian Superstore
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore Cadbury Dairy Milk, Snickers, 5 Star, Hershey's Kisses, Dark Chocolate & Appliances.
+              Explore Cadbury Dairy Milk, Snickers, 5 Star, ACs, Refrigerators & Fashion (Prices in INR ₹).
             </p>
           </div>
 
@@ -330,7 +343,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               </p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '0.8rem' }}>
                 <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-gold)' }}>
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toLocaleString('en-IN')}
                 </span>
                 <button
                   onClick={() => addToCart(product)}
@@ -432,7 +445,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                       {item.name}
                     </div>
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                      Qty: {item.quantity} × ${item.price.toFixed(2)}
+                      Qty: {item.quantity} × ₹{item.price.toLocaleString('en-IN')}
                     </div>
                   </div>
                   <button 
@@ -450,11 +463,11 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
             <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem', marginBottom: '1.2rem', fontSize: '0.9rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-main)', fontWeight: 700, fontSize: '1.1rem', marginTop: '0.4rem' }}>
                 <span>Total Amount:</span>
-                <span style={{ color: 'var(--accent-gold)' }}>${finalTotal.toFixed(2)}</span>
+                <span style={{ color: 'var(--accent-gold)' }}>₹{finalTotal.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
@@ -465,7 +478,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 className="btn-success"
                 style={{ width: '100%', padding: '0.8rem' }}
               >
-                <CheckCircle size={18} /> Complete Order (${finalTotal.toFixed(2)})
+                <CheckCircle size={18} /> Complete Order (₹{finalTotal.toLocaleString('en-IN')})
               </button>
 
               <button

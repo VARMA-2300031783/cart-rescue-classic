@@ -40,7 +40,7 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
               Cart Rescue
             </h1>
             <span style={{ fontSize: '0.78rem', color: 'var(--accent-gold)', fontWeight: 600 }}>
-              Classic White Edition
+              Indian Rupees (₹) Edition
             </span>
           </div>
         </div>
@@ -137,7 +137,7 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
             fontWeight: 600
           }}>
             <ShieldCheck size={16} />
-            <span>Rescued Sales: <strong>${rescuedRevenue}</strong></span>
+            <span>Rescued Sales: <strong>₹{rescuedRevenue}</strong></span>
           </div>
         </div>
       </div>

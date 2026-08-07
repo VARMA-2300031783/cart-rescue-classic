@@ -13,11 +13,11 @@ let carts = [
     id: 'cart-101',
     customerName: 'Sarah Jenkins',
     customerEmail: 'sarah.j@example.com',
-    customerPhone: '+1 (555) 234-5678',
+    customerPhone: '+91 98765 43210',
     items: [
-      { id: 1, name: 'Classic Leather Tote Bag', price: 129.00, quantity: 1, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80' }
+      { id: 401, name: 'Cadbury Dairy Milk Silk Chocolate Bar', price: 180.00, quantity: 2, image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=400&q=80' }
     ],
-    totalValue: 129.00,
+    totalValue: 360.00,
     status: 'abandoned',
     abandonedAt: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
     lastNotificationSent: 'OFFER_UPI_RETRY_LINK',
@@ -26,17 +26,17 @@ let carts = [
     diagnosis: 'PAYMENT_FAILURE',
     recommendedAction: 'OFFER_UPI_RETRY_LINK',
     actionReason: 'Payment timeout detected on UPI gateway. Do not discount (payment issue, not price issue).',
-    marginSaved: 19.35
+    marginSaved: 54.00
   },
   {
     id: 'cart-102',
     customerName: 'David Miller',
     customerEmail: 'david.m@example.com',
-    customerPhone: '+1 (555) 876-5432',
+    customerPhone: '+91 98765 12345',
     items: [
-      { id: 3, name: 'Ergonomic Wooden Desk Chair', price: 249.00, quantity: 1, image: 'https://images.unsplash.com/photo-1580481072645-022f9a6d1290?auto=format&fit=crop&w=400&q=80' }
+      { id: 503, name: 'Daikin 1.5 Ton 5-Star Inverter Split AC', price: 44990.00, quantity: 1, image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=400&q=80' }
     ],
-    totalValue: 249.00,
+    totalValue: 44990.00,
     status: 'abandoned',
     abandonedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
     lastNotificationSent: 'MARGIN_BOUNDED_DISCOUNT (10% Off)',
@@ -45,17 +45,17 @@ let carts = [
     diagnosis: 'PRICE_SHOPPING',
     recommendedAction: 'MARGIN_BOUNDED_DISCOUNT',
     actionReason: 'Tab switching detected. Apply 10% coupon (RESCUE10) to match price expectation.',
-    marginSaved: 12.45
+    marginSaved: 2249.50
   },
   {
     id: 'cart-103',
     customerName: 'Emma Watson',
     customerEmail: 'emma.w@example.com',
-    customerPhone: '+1 (555) 432-1098',
+    customerPhone: '+91 98765 67890',
     items: [
-      { id: 4, name: 'Wireless Noise Canceling Headphones', price: 179.00, quantity: 1, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80' }
+      { id: 301, name: "Levi's 501 Original Fit Straight Jeans", price: 3999.00, quantity: 1, image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80' }
     ],
-    totalValue: 179.00,
+    totalValue: 3999.00,
     status: 'rescued',
     abandonedAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
     rescuedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
@@ -65,15 +65,15 @@ let carts = [
     diagnosis: 'SURPRISE_SHIPPING',
     recommendedAction: 'WAIVE_SHIPPING_FEE',
     actionReason: 'Free shipping promo code FLATSIP applied.',
-    marginSaved: 17.90
+    marginSaved: 399.90
   }
 ];
 
 let stats = {
   totalCartsAbandoned: 142,
   totalCartsRescued: 48,
-  totalRevenueRescued: 7420.00,
-  marginSaved: 1280.00,
+  totalRevenueRescued: 485900.00,
+  marginSaved: 84500.00,
   activeCampaigns: 3,
   holdoutControlGroupRecoveryRate: '18.4%',
   aiIncrementalLift: '+15.4%'
@@ -82,7 +82,7 @@ let stats = {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    message: 'Cart Rescue Track 2 AI Agent Express Server is running.'
+    message: 'Cart Rescue Track 2 AI Express Backend is running.'
   });
 });
 
@@ -193,7 +193,7 @@ app.post('/api/carts/abandon', (req, res) => {
     id: `cart-${Date.now()}`,
     customerName: customerName || 'Guest Customer',
     customerEmail: customerEmail || 'guest@example.com',
-    customerPhone: customerPhone || '+1 (555) 000-0000',
+    customerPhone: customerPhone || '+91 98765 00000',
     items,
     totalValue: parseFloat(totalValue) || items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
     status: 'abandoned',
@@ -282,8 +282,8 @@ app.get('/api/stats', (req, res) => {
   res.json({
     totalCartsAbandoned: stats.totalCartsAbandoned,
     totalCartsRescued: stats.totalCartsRescued,
-    totalRevenueRescued: stats.totalRevenueRescued.toFixed(2),
-    marginSaved: stats.marginSaved.toFixed(2),
+    totalRevenueRescued: stats.totalRevenueRescued.toLocaleString('en-IN'),
+    marginSaved: stats.marginSaved.toLocaleString('en-IN'),
     activeAbandonedCount,
     totalRescuedCount,
     recoveryRate: `${recoveryRate}%`,

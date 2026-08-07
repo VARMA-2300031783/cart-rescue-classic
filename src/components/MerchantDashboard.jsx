@@ -19,8 +19,8 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerName: 'Sample Customer',
-          items: [{ name: 'Classic Leather Bag' }],
-          totalValue: 129.00,
+          items: [{ name: 'Cadbury Dairy Milk Silk' }],
+          totalValue: 180.00,
           discountPercent: aiDiscount,
           channel: aiChannel
         })
@@ -36,8 +36,8 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
     }
   };
 
-  const revenueDisplay = stats?.totalRevenueRescued ?? '7420.00';
-  const marginDisplay = stats?.marginSaved ?? '1280.00';
+  const revenueDisplay = stats?.totalRevenueRescued ?? '4,85,900';
+  const marginDisplay = stats?.marginSaved ?? '84,500';
   const rescuedCountDisplay = stats?.totalRescuedCount ?? rescuedCarts.length;
   const rateDisplay = stats?.recoveryRate ?? '33.8%';
   const holdoutRate = stats?.holdoutControlGroupRecoveryRate ?? '18.4%';
@@ -65,10 +65,10 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
         <div className="glass-card" style={{ borderLeft: '4px solid var(--accent-emerald)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total Sales Rescued</span>
-            <DollarSign size={20} color="var(--accent-emerald)" />
+            <span style={{ fontWeight: 800, color: 'var(--accent-emerald)', fontSize: '1.2rem' }}>₹</span>
           </div>
           <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#059669' }}>
-            ${revenueDisplay}
+            ₹{revenueDisplay}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
             {rescuedCountDisplay} recovered carts
@@ -81,7 +81,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <ShieldCheck size={20} color="var(--accent-gold)" />
           </div>
           <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#b45309' }}>
-            ${marginDisplay}
+            ₹{marginDisplay}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
             Protected by skipping blanket discounts
@@ -175,8 +175,8 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
                       <strong>AI Reason:</strong> {reason}
                     </div>
                     <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      <span>Cart Value: <strong>${cartTotal.toFixed(2)}</strong></span>
-                      <span style={{ color: '#059669' }}>Margin Protected: <strong>+${marginSavedVal}</strong></span>
+                      <span>Cart Value: <strong>₹{cartTotal.toLocaleString('en-IN')}</strong></span>
+                      <span style={{ color: '#059669' }}>Margin Protected: <strong>+₹{Number(marginSavedVal).toLocaleString('en-IN')}</strong></span>
                       <span>TRAI Opt-in: <strong style={{ color: '#059669' }}>Compliant</strong></span>
                     </div>
                   </div>

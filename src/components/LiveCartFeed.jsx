@@ -20,7 +20,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
             <Radio size={24} color="var(--accent-rose)" /> Live Cart Activity Feed
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Real-time tracking of abandoned customer shopping carts and recovery outcomes.
+            Real-time tracking of abandoned customer shopping carts and recovery outcomes (Prices in INR ₹).
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
                         </span>
                       )}
                       <span style={{ fontWeight: 700, color: 'var(--accent-gold)', marginLeft: '0.5rem', fontSize: '0.9rem' }}>
-                        ${cartTotal.toFixed(2)}
+                        ₹{cartTotal.toLocaleString('en-IN')}
                       </span>
                     </div>
 
@@ -154,7 +154,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
                   ) : (
                     <div style={{ textAlign: 'right' }}>
                       <span className="badge badge-rescued" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>
-                        Revenue Saved: ${cartTotal.toFixed(2)}
+                        Revenue Saved: ₹{cartTotal.toLocaleString('en-IN')}
                       </span>
                     </div>
                   )}
