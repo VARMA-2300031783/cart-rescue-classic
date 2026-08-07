@@ -4,66 +4,100 @@ import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag,
 const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
-  // Fashion Items
+  // Branded Jeans
   {
     id: 301,
-    name: 'Slim-Fit Stretch Denim Jeans',
+    name: "Levi's 501 Original Fit Straight Jeans",
     category: 'Fashion',
     subCategory: 'Jeans',
-    price: 69.00,
-    rating: 4.8,
+    brand: "Levi's",
+    price: 79.00,
+    rating: 4.9,
     image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80',
-    description: 'Classic indigo blue stretch denim with 5-pocket styling and tapered fit.'
+    description: "Iconic Levi's 501 straight-leg stretch denim with signature leather patch."
   },
   {
     id: 302,
-    name: 'Premium Cotton Oxford Button-Down Shirt',
+    name: 'Wrangler Authentic Regular Fit Denim Jeans',
     category: 'Fashion',
-    subCategory: 'Shirts',
-    price: 59.00,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
-    description: 'Crisp 100% Egyptian cotton formal button-down shirt with tailored fit.'
+    subCategory: 'Jeans',
+    brand: 'Wrangler',
+    price: 64.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1582552938357-32b906df40cb?auto=format&fit=crop&w=600&q=80',
+    description: 'Durable heavyweight cotton denim with comfort flex waistband.'
   },
+
+  // Branded Shirts
   {
     id: 303,
-    name: 'Classic Biker Leather Jacket',
+    name: 'Ralph Lauren Custom Fit Oxford Shirt',
+    category: 'Fashion',
+    subCategory: 'Shirts',
+    brand: 'Polo Ralph Lauren',
+    price: 98.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
+    description: 'Signature embroidered pony logo on 100% breathable Oxford cotton.'
+  },
+  {
+    id: 304,
+    name: 'Tommy Hilfiger Casual Plaid Cotton Shirt',
+    category: 'Fashion',
+    subCategory: 'Shirts',
+    brand: 'Tommy Hilfiger',
+    price: 85.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
+    description: 'Classic American heritage checked cotton shirt with flag logo embroidery.'
+  },
+
+  // Branded Round Neck T-Shirts
+  {
+    id: 305,
+    name: 'Nike Sportswear Essential Crewneck T-Shirt',
+    category: 'Fashion',
+    subCategory: 'Round Neck T-Shirts',
+    brand: 'Nike',
+    price: 35.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+    description: 'Heavyweight organic cotton round neck t-shirt with classic Swoosh logo.'
+  },
+  {
+    id: 306,
+    name: 'Adidas Trefoil Essentials Round Neck Tee',
+    category: 'Fashion',
+    subCategory: 'Round Neck T-Shirts',
+    brand: 'Adidas',
+    price: 32.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+    description: 'Soft single jersey cotton round neck t-shirt featuring the iconic Trefoil logo.'
+  },
+
+  // Jackets & Full Sleeves
+  {
+    id: 307,
+    name: 'Classic Biker Lambskin Leather Jacket',
     category: 'Fashion',
     subCategory: 'Jackets',
+    brand: 'Jack & Jones',
     price: 249.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
     description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
   },
   {
-    id: 304,
-    name: 'Classic Vintage Denim Trucker Jacket',
-    category: 'Fashion',
-    subCategory: 'Jackets',
-    price: 119.00,
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=600&q=80',
-    description: 'Heavyweight washed denim trucker jacket with brass button closures.'
-  },
-  {
-    id: 305,
-    name: 'Thermal Full Sleeve Crewneck T-Shirt',
+    id: 308,
+    name: 'Calvin Klein Thermal Full Sleeve T-Shirt',
     category: 'Fashion',
     subCategory: 'Full Sleeve T-Shirts',
-    price: 39.00,
+    brand: 'Calvin Klein',
+    price: 49.00,
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
-    description: 'Soft combed cotton full sleeve t-shirt with ribbed cuffs and breathable fabric.'
-  },
-  {
-    id: 306,
-    name: 'Premium Heavyweight Cotton Round Neck T-Shirt',
-    category: 'Fashion',
-    subCategory: 'Round Neck T-Shirts',
-    price: 29.00,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
-    description: 'Minimalist 220 GSM bio-washed cotton round neck basic t-shirt.'
+    description: 'Soft stretch cotton full sleeve crewneck with subtle CK chest logo.'
   },
 
   // Electronics
@@ -202,10 +236,10 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
-              Premium Marketplace Catalog
+              Branded Fashion & Lifestyle Marketplace
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore High-Resolution Fashion, Mobiles, Electronics & Chocolates.
+              Explore Levi's, Ralph Lauren, Tommy Hilfiger, Nike & Adidas.
             </p>
           </div>
 
@@ -245,7 +279,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                   ★ {product.rating}
                 </span>
                 <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.85)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
-                  {product.subCategory || product.category}
+                  {product.brand ? product.brand : (product.subCategory || product.category)}
                 </span>
               </div>
 
