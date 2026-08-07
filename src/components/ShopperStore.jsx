@@ -1,10 +1,45 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
-const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80';
+const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
-  // Home Appliances
+  // Home Appliances - Air Conditioners Collection
+  {
+    id: 503,
+    name: 'Daikin 1.5 Ton 5-Star Inverter Split AC',
+    category: 'Appliances',
+    subCategory: 'Air Conditioners',
+    brand: 'Daikin',
+    price: 749.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=600&q=80',
+    description: '3D airflow wall-mounted inverter split air conditioner with PM 2.5 filter.'
+  },
+  {
+    id: 504,
+    name: 'Voltas 1.5 Ton 3-Star Window Air Conditioner',
+    category: 'Appliances',
+    subCategory: 'Air Conditioners',
+    brand: 'Voltas',
+    price: 499.00,
+    rating: 4.7,
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80',
+    description: 'High-ambient cooling turbo window air conditioner with copper condenser.'
+  },
+  {
+    id: 505,
+    name: 'Blue Star Smart Inverter Portable AC',
+    category: 'Appliances',
+    subCategory: 'Air Conditioners',
+    brand: 'Blue Star',
+    price: 599.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=600&q=80',
+    description: 'Freestanding smart portable air conditioner with remote & Wi-Fi control.'
+  },
+
+  // Home Appliances - Refrigerators & Washers
   {
     id: 501,
     name: 'Samsung 580L Double Door Convertible Refrigerator',
@@ -26,17 +61,6 @@ const PRODUCTS = [
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80',
     description: 'AI Direct Drive washer with steam hygiene wash and TurboWash 360° technology.'
-  },
-  {
-    id: 503,
-    name: 'Daikin 1.5 Ton 5-Star Inverter Split AC',
-    category: 'Appliances',
-    subCategory: 'Air Conditioners',
-    brand: 'Daikin',
-    price: 749.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=600&q=80',
-    description: '3D airflow inverter split AC with PM 2.5 filter and dew clean technology.'
   },
 
   // Branded Jeans
@@ -247,7 +271,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               Premium Indian Superstore
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore High-Resolution Refrigerators, Washing Machines, ACs, Fashion & Mobiles.
+              Explore Air Conditioners (Split, Window, Portable), Refrigerators, Fashion & Tech.
             </p>
           </div>
 
