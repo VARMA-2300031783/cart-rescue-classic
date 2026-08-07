@@ -35,7 +35,7 @@ const PRODUCTS = [
     brand: 'Daikin',
     price: 749.00,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=600&q=80',
     description: '3D airflow inverter split AC with PM 2.5 filter and dew clean technology.'
   },
 
