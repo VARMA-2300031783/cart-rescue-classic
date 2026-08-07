@@ -1,9 +1,66 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
-const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=600&q=80';
+const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
+  // Chocolates Collection (Dairy Milk, Snickers, 5 Star, Kisses, Dark Chocolate)
+  {
+    id: 401,
+    name: 'Cadbury Dairy Milk Silk Chocolate Bar',
+    category: 'Chocolates',
+    subCategory: 'Milk Chocolate',
+    brand: 'Cadbury',
+    price: 12.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80',
+    description: 'Smooth and creamy premium milk chocolate bar crafted with rich cocoa.'
+  },
+  {
+    id: 402,
+    name: 'Snickers Peanut & Caramel Chocolate Bar (Pack of 4)',
+    category: 'Chocolates',
+    subCategory: 'Snack Bars',
+    brand: 'Snickers',
+    price: 15.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=600&q=80',
+    description: 'Roasted peanuts, caramel, and nougat coated in delicious milk chocolate.'
+  },
+  {
+    id: 403,
+    name: 'Cadbury 5 Star Caramel & Chewy Nougat Bar',
+    category: 'Chocolates',
+    subCategory: 'Caramel Bars',
+    brand: 'Cadbury',
+    price: 8.00,
+    rating: 4.7,
+    image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=600&q=80',
+    description: 'Chewy caramel and soft chocolate nougat wrapped in milk chocolate.'
+  },
+  {
+    id: 404,
+    name: "Hershey's Kisses Creamy Milk Chocolates (Bag)",
+    category: 'Chocolates',
+    subCategory: 'Bite-Sized',
+    brand: "Hershey's",
+    price: 18.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
+    description: 'Iconic tear-drop shaped bite-sized milk chocolates individually foil-wrapped.'
+  },
+  {
+    id: 405,
+    name: 'Lindt Excellence 85% Intense Dark Chocolate',
+    category: 'Chocolates',
+    subCategory: 'Dark Chocolate',
+    brand: 'Lindt',
+    price: 22.00,
+    rating: 5.0,
+    image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80',
+    description: 'Full-bodied 85% cocoa dark chocolate with notes of roasted coffee and vanilla.'
+  },
+
   // Home Appliances - Air Conditioners Collection
   {
     id: 503,
@@ -26,17 +83,6 @@ const PRODUCTS = [
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80',
     description: 'High-ambient cooling turbo window air conditioner with copper condenser.'
-  },
-  {
-    id: 505,
-    name: 'Blue Star Smart Inverter Portable AC',
-    category: 'Appliances',
-    subCategory: 'Air Conditioners',
-    brand: 'Blue Star',
-    price: 599.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=600&q=80',
-    description: 'Freestanding smart portable air conditioner with remote & Wi-Fi control.'
   },
 
   // Home Appliances - Refrigerators & Washers
@@ -135,20 +181,7 @@ const PRODUCTS = [
     description: 'Soft single jersey cotton round neck t-shirt featuring the iconic Trefoil logo.'
   },
 
-  // Jackets
-  {
-    id: 307,
-    name: 'Classic Biker Lambskin Leather Jacket',
-    category: 'Fashion',
-    subCategory: 'Jackets',
-    brand: 'Jack & Jones',
-    price: 249.00,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
-    description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
-  },
-
-  // Electronics
+  // Electronics & Mobiles
   {
     id: 101,
     name: 'Sony WH-1000XM5 Wireless Headphones',
@@ -160,8 +193,6 @@ const PRODUCTS = [
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
     description: 'Industry-leading noise canceling headphones with dual processors and 30hr battery.'
   },
-  
-  // Mobiles
   {
     id: 201,
     name: 'iPhone 15 Pro Max Titanium',
@@ -172,30 +203,6 @@ const PRODUCTS = [
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80',
     description: 'A17 Pro chip, Aerospace-grade titanium design, and 5x Telephoto camera.'
-  },
-  {
-    id: 202,
-    name: 'Samsung Galaxy S24 Ultra 5G',
-    category: 'Mobiles',
-    subCategory: 'Smartphones',
-    brand: 'Samsung',
-    price: 1299.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80',
-    description: 'Galaxy AI features, integrated S Pen, and 200MP camera resolution.'
-  },
-
-  // Chocolates
-  {
-    id: 401,
-    name: 'Swiss Dark Chocolate Truffles Box',
-    category: 'Chocolates',
-    subCategory: 'Truffles',
-    brand: 'Lindt',
-    price: 45.00,
-    rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80',
-    description: '24-piece artisan truffles crafted with 70% Single-Origin cocoa & ganache.'
   }
 ];
 
@@ -216,7 +223,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     phone: '+1 (555) 333-4444'
   });
 
-  const categories = ['All', 'Appliances', 'Fashion', 'Mobiles', 'Electronics', 'Chocolates'];
+  const categories = ['All', 'Chocolates', 'Appliances', 'Fashion', 'Mobiles', 'Electronics'];
 
   const filteredProducts = selectedCategory === 'All' 
     ? PRODUCTS 
@@ -271,7 +278,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               Premium Indian Superstore
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore Air Conditioners (Split, Window, Portable), Refrigerators, Fashion & Tech.
+              Explore Cadbury Dairy Milk, Snickers, 5 Star, Hershey's Kisses, Dark Chocolate & Appliances.
             </p>
           </div>
 
