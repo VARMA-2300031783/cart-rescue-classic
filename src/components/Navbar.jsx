@@ -4,18 +4,17 @@ import { ShoppingCart, LayoutDashboard, Radio, Zap, ShieldCheck } from 'lucide-r
 export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedRevenue, activeAbandonedCount }) {
   return (
     <header style={{
-      background: 'rgba(15, 23, 42, 0.9)',
-      backdropFilter: 'blur(16px)',
+      background: '#ffffff',
       borderBottom: '1px solid var(--border-color)',
-      sticky: 'top',
       position: 'sticky',
       top: 0,
-      zIndex: 50
+      zIndex: 50,
+      boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
     }}>
       <div style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        padding: '1rem 1.5rem',
+        padding: '0.9rem 1.5rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -25,7 +24,7 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
         {/* Brand Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
           <div style={{
-            background: 'linear-gradient(135deg, var(--accent-gold) 0%, #d97706 100%)',
+            background: 'linear-gradient(135deg, var(--accent-gold) 0%, #b45309 100%)',
             width: '42px',
             height: '42px',
             borderRadius: 'var(--radius-sm)',
@@ -41,13 +40,13 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
               Cart Rescue
             </h1>
             <span style={{ fontSize: '0.78rem', color: 'var(--accent-gold)', fontWeight: 600 }}>
-              Classic & Simple English Edition
+              Classic White Edition
             </span>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <nav style={{ display: 'flex', gap: '0.5rem', background: 'rgba(30, 41, 59, 0.7)', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+        <nav style={{ display: 'flex', gap: '0.4rem', background: '#f1f5f9', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
           <button
             onClick={() => setActiveTab('storefront')}
             style={{
@@ -55,8 +54,9 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.88rem',
               fontWeight: 600,
-              background: activeTab === 'storefront' ? 'var(--accent-gold)' : 'transparent',
-              color: activeTab === 'storefront' ? '#ffffff' : 'var(--text-muted)',
+              background: activeTab === 'storefront' ? '#ffffff' : 'transparent',
+              color: activeTab === 'storefront' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              boxShadow: activeTab === 'storefront' ? 'var(--shadow-sm)' : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem'
@@ -66,8 +66,8 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
             Storefront
             {cartCount > 0 && (
               <span style={{
-                background: '#ffffff',
-                color: '#d97706',
+                background: 'var(--accent-gold)',
+                color: '#ffffff',
                 borderRadius: '50%',
                 padding: '0.1rem 0.45rem',
                 fontSize: '0.75rem',
@@ -85,8 +85,9 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.88rem',
               fontWeight: 600,
-              background: activeTab === 'dashboard' ? 'var(--accent-gold)' : 'transparent',
-              color: activeTab === 'dashboard' ? '#ffffff' : 'var(--text-muted)',
+              background: activeTab === 'dashboard' ? '#ffffff' : 'transparent',
+              color: activeTab === 'dashboard' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              boxShadow: activeTab === 'dashboard' ? 'var(--shadow-sm)' : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem'
@@ -103,8 +104,9 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.88rem',
               fontWeight: 600,
-              background: activeTab === 'livefeed' ? 'var(--accent-gold)' : 'transparent',
-              color: activeTab === 'livefeed' ? '#ffffff' : 'var(--text-muted)',
+              background: activeTab === 'livefeed' ? '#ffffff' : 'transparent',
+              color: activeTab === 'livefeed' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              boxShadow: activeTab === 'livefeed' ? 'var(--shadow-sm)' : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem'
@@ -123,12 +125,12 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
         {/* Quick Merchant Metric Badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
-            background: 'rgba(16, 185, 129, 0.12)',
-            border: '1px solid rgba(16, 185, 129, 0.3)',
+            background: '#d1fae5',
+            border: '1px solid #a7f3d0',
             padding: '0.4rem 0.8rem',
             borderRadius: 'var(--radius-sm)',
             fontSize: '0.82rem',
-            color: '#34d399',
+            color: '#059669',
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',

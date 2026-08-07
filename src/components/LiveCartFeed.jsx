@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Radio, Filter, Mail, MessageSquare, CheckCircle, Clock, ExternalLink } from 'lucide-react';
 
 export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescue, onPreviewEmail }) {
-  const [filter, setFilter] = useState('all'); // all, abandoned, rescued
+  const [filter, setFilter] = useState('all');
 
   const safeCarts = Array.isArray(carts) ? carts : [];
 
@@ -25,7 +25,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
         </div>
 
         {/* Filter Buttons */}
-        <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(30, 41, 59, 0.6)', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', background: '#f1f5f9', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
           <button
             onClick={() => setFilter('all')}
             style={{
@@ -33,8 +33,9 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.82rem',
               fontWeight: 600,
-              background: filter === 'all' ? 'var(--accent-gold)' : 'transparent',
-              color: filter === 'all' ? '#ffffff' : 'var(--text-muted)'
+              background: filter === 'all' ? '#ffffff' : 'transparent',
+              color: filter === 'all' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              boxShadow: filter === 'all' ? 'var(--shadow-sm)' : 'none'
             }}
           >
             All Carts ({safeCarts.length})
@@ -46,8 +47,9 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.82rem',
               fontWeight: 600,
-              background: filter === 'abandoned' ? 'var(--accent-rose)' : 'transparent',
-              color: filter === 'abandoned' ? '#ffffff' : 'var(--text-muted)'
+              background: filter === 'abandoned' ? '#ffffff' : 'transparent',
+              color: filter === 'abandoned' ? '#e11d48' : 'var(--text-muted)',
+              boxShadow: filter === 'abandoned' ? 'var(--shadow-sm)' : 'none'
             }}
           >
             Abandoned ({safeCarts.filter(c => c.status === 'abandoned').length})
@@ -59,8 +61,9 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
               borderRadius: 'var(--radius-sm)',
               fontSize: '0.82rem',
               fontWeight: 600,
-              background: filter === 'rescued' ? 'var(--accent-emerald)' : 'transparent',
-              color: filter === 'rescued' ? '#ffffff' : 'var(--text-muted)'
+              background: filter === 'rescued' ? '#ffffff' : 'transparent',
+              color: filter === 'rescued' ? '#059669' : 'var(--text-muted)',
+              boxShadow: filter === 'rescued' ? 'var(--shadow-sm)' : 'none'
             }}
           >
             Rescued ({safeCarts.filter(c => c.status === 'rescued').length})
@@ -82,7 +85,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
                 <div 
                   key={cart.id} 
                   style={{ 
-                    background: 'rgba(15, 23, 42, 0.6)', 
+                    background: '#f8fafc', 
                     border: '1px solid var(--border-color)', 
                     borderRadius: 'var(--radius-sm)', 
                     padding: '1.2rem',
@@ -94,7 +97,7 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
                 >
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.4rem' }}>
-                      <span style={{ fontWeight: 700, fontSize: '1.05rem' }}>{cart.customerName || 'Customer'}</span>
+                      <span style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-main)' }}>{cart.customerName || 'Customer'}</span>
                       <span className={cart.status === 'rescued' ? 'badge badge-rescued' : 'badge badge-abandoned'}>
                         {cart.status === 'rescued' ? '✓ Rescued' : '• Abandoned'}
                       </span>
@@ -110,12 +113,12 @@ export default function LiveCartFeed({ carts = [], onSendRescue, onCompleteRescu
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                       {Array.isArray(cart.items) && cart.items.length > 0 ? (
                         cart.items.map((item, idx) => (
-                          <span key={idx} style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-main)' }}>
+                          <span key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-main)' }}>
                             {item.name} × {item.quantity || 1}
                           </span>
                         ))
                       ) : (
-                        <span style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-main)' }}>
+                        <span style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--text-main)' }}>
                           Classic Store Items
                         </span>
                       )}

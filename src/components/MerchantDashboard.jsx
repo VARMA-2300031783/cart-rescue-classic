@@ -67,7 +67,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total Sales Rescued</span>
             <DollarSign size={20} color="var(--accent-emerald)" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#34d399' }}>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#059669' }}>
             ${revenueDisplay}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
@@ -80,7 +80,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Margin Guardrail Saved</span>
             <ShieldCheck size={20} color="var(--accent-gold)" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fbbf24' }}>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#b45309' }}>
             ${marginDisplay}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
@@ -88,12 +88,12 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
           </span>
         </div>
 
-        <div className="glass-card" style={{ borderLeft: '4px solid #38bdf8' }}>
+        <div className="glass-card" style={{ borderLeft: '4px solid #0284c7' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Holdout A/B Control Lift</span>
-            <TrendingUp size={20} color="#38bdf8" />
+            <TrendingUp size={20} color="#0284c7" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#38bdf8' }}>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0284c7' }}>
             {aiLift}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
@@ -106,7 +106,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Active Pending Carts</span>
             <ShoppingCart size={20} color="var(--accent-rose)" />
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fb7185' }}>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#e11d48' }}>
             {abandonedCarts.length}
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--text-subtle)' }}>
@@ -147,7 +147,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
               const marginSavedVal = cart.marginSaved || (cartTotal * 0.15).toFixed(2);
 
               return (
-                <div key={cart.id} style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                <div key={cart.id} style={{ background: '#f8fafc', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   {/* Top Bar: Customer Name & AI Badges */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.8rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
@@ -157,27 +157,27 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
                       <span className="badge badge-gold" style={{ fontSize: '0.75rem' }}>
                         Risk Score: {riskScore}% ({riskScore >= 70 ? 'HIGH' : 'MEDIUM'})
                       </span>
-                      <span style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '0.25rem 0.65rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600 }}>
+                      <span style={{ background: '#e0f2fe', color: '#0369a1', border: '1px solid #bae6fd', padding: '0.25rem 0.65rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600 }}>
                         Diagnosis: {diagnosis}
                       </span>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ background: action === 'DO_NOTHING' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)', color: action === 'DO_NOTHING' ? '#34d399' : '#fbbf24', border: '1px solid var(--border-hover)', padding: '0.3rem 0.75rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 700 }}>
+                      <span style={{ background: action === 'DO_NOTHING' ? '#d1fae5' : '#fef3c7', color: action === 'DO_NOTHING' ? '#059669' : '#b45309', border: '1px solid var(--border-hover)', padding: '0.3rem 0.75rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 700 }}>
                         Action: {action}
                       </span>
                     </div>
                   </div>
 
                   {/* Diagnosis & Margin Explanation */}
-                  <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: '0.8rem 1rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}>
+                  <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '0.8rem 1rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}>
                     <div style={{ color: 'var(--text-main)', marginBottom: '0.3rem' }}>
                       <strong>AI Reason:</strong> {reason}
                     </div>
                     <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                       <span>Cart Value: <strong>${cartTotal.toFixed(2)}</strong></span>
-                      <span style={{ color: '#34d399' }}>Margin Protected: <strong>+${marginSavedVal}</strong></span>
-                      <span>TRAI Opt-in: <strong style={{ color: '#34d399' }}>Compliant</strong></span>
+                      <span style={{ color: '#059669' }}>Margin Protected: <strong>+${marginSavedVal}</strong></span>
+                      <span>TRAI Opt-in: <strong style={{ color: '#059669' }}>Compliant</strong></span>
                     </div>
                   </div>
 
@@ -215,7 +215,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
       </div>
 
       {/* AI Copy Generator Tool */}
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.95) 100%)' }}>
+      <div className="glass-card" style={{ background: '#ffffff' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.8rem' }}>
           <Sparkles size={22} color="var(--accent-gold)" />
           <h3 className="title-serif" style={{ fontSize: '1.3rem', color: 'var(--text-main)' }}>
@@ -234,7 +234,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <select
               value={aiDiscount}
               onChange={(e) => setAiDiscount(Number(e.target.value))}
-              style={{ background: '#0f172a', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.5rem 0.8rem', borderRadius: 'var(--radius-sm)' }}
+              style={{ background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.5rem 0.8rem', borderRadius: 'var(--radius-sm)' }}
             >
               <option value={0}>OFFER_UPI_RETRY_LINK (0% Discount)</option>
               <option value={10}>MARGIN_BOUNDED_DISCOUNT (10% Off)</option>
@@ -249,7 +249,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
             <select
               value={aiChannel}
               onChange={(e) => setAiChannel(e.target.value)}
-              style={{ background: '#0f172a', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.5rem 0.8rem', borderRadius: 'var(--radius-sm)' }}
+              style={{ background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.5rem 0.8rem', borderRadius: 'var(--radius-sm)' }}
             >
               <option value="email">Email Notification</option>
               <option value="sms">SMS Text (TRAI DND Compliant)</option>
@@ -268,7 +268,7 @@ export default function MerchantDashboard({ stats = {}, carts = [], onSendRescue
         </div>
 
         {aiGeneratedText && (
-          <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-hover)', borderRadius: 'var(--radius-sm)', padding: '1rem', fontSize: '0.88rem' }}>
+          <div style={{ background: '#f8fafc', border: '1px solid var(--border-hover)', borderRadius: 'var(--radius-sm)', padding: '1rem', fontSize: '0.88rem' }}>
             <div style={{ color: 'var(--accent-gold)', fontWeight: 600, marginBottom: '0.5rem' }}>
               Subject / Headline: {aiGeneratedText.subject}
             </div>

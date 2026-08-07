@@ -49,7 +49,7 @@ const SAMPLE_CUSTOMERS = [
 
 export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, onCheckoutSuccess, promoCode, discountPercent }) {
   const [showExitNotice, setShowExitNotice] = useState(false);
-  const [sessionSignal, setSessionSignal] = useState('hasPaymentError'); // hasPaymentError, reachedShippingStep, askedForCOD, tabSwitchCount, normal
+  const [sessionSignal, setSessionSignal] = useState('hasPaymentError');
   const [customerInfo, setCustomerInfo] = useState({
     name: 'Robert Fox',
     email: 'robert.fox@example.com',
@@ -154,7 +154,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         </div>
 
         {/* Customer Information Editable Form */}
-        <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', padding: '0.9rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
+        <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '0.9rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
           <div style={{ color: 'var(--accent-gold)', marginBottom: '0.6rem', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <User size={15} /> Customer Details:
           </div>
@@ -167,7 +167,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 value={customerInfo.name}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
                 placeholder="Enter customer name..."
-                style={{ width: '100%', background: '#0f172a', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+                style={{ width: '100%', background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
               />
             </div>
           </div>
@@ -178,8 +178,8 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 key={idx}
                 onClick={() => setCustomerInfo(cust)}
                 style={{
-                  background: customerInfo.name === cust.name ? 'var(--accent-gold)' : 'rgba(255,255,255,0.08)',
-                  color: customerInfo.name === cust.name ? '#ffffff' : 'var(--text-muted)',
+                  background: customerInfo.name === cust.name ? 'var(--accent-gold)' : '#e2e8f0',
+                  color: customerInfo.name === cust.name ? '#ffffff' : 'var(--text-main)',
                   fontSize: '0.72rem',
                   padding: '0.2rem 0.5rem',
                   borderRadius: 'var(--radius-sm)',
@@ -192,13 +192,13 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           </div>
 
           {/* AI Session Friction Signal Selector */}
-          <div style={{ color: '#38bdf8', marginBottom: '0.4rem', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.6rem' }}>
+          <div style={{ color: '#0284c7', marginBottom: '0.4rem', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.6rem' }}>
             <ShieldAlert size={15} /> Track 2 AI Abandonment Signal:
           </div>
           <select
             value={sessionSignal}
             onChange={(e) => setSessionSignal(e.target.value)}
-            style={{ width: '100%', background: '#0f172a', color: '#38bdf8', border: '1px solid #0284c7', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 600 }}
+            style={{ width: '100%', background: '#ffffff', color: '#0284c7', border: '1px solid #0284c7', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 600 }}
           >
             <option value="hasPaymentError">💳 Payment Timeout (UPI Gateway Failure)</option>
             <option value="reachedShippingStep">🚚 Surprise Shipping Cost Hesitation</option>
@@ -217,7 +217,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           <div>
             <div style={{ maxHeight: '180px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
               {cartItems.map(item => (
-                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', background: 'rgba(255,255,255,0.03)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', background: '#f8fafc', padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #f1f5f9' }}>
                   <img src={item.image} alt={item.name} style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px' }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '0.88rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whitespace: 'nowrap' }}>
@@ -263,7 +263,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               <button
                 onClick={handleSimulateAbandon}
                 className="btn-secondary"
-                style={{ width: '100%', padding: '0.7rem', color: '#fb7185', borderColor: 'rgba(244, 63, 94, 0.3)' }}
+                style={{ width: '100%', padding: '0.7rem', color: '#e11d48', borderColor: '#fecdd3', background: '#fff1f2' }}
               >
                 <AlertTriangle size={16} /> Test AI Remediation Agent ({customerInfo.name})
               </button>
@@ -272,7 +272,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         )}
 
         {showExitNotice && (
-          <div style={{ marginTop: '1rem', padding: '0.8rem', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: '#fbbf24' }}>
+          <div style={{ marginTop: '1rem', padding: '0.8rem', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: '#b45309' }}>
             <strong>AI Agent Diagnosed Session!</strong> Check the <em>Merchant Dashboard</em> to see the Risk Score %, Diagnosis, Policy-Bounded Action, and Margin Saved.
           </div>
         )}
