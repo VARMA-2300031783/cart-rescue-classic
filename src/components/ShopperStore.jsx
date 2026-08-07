@@ -2,6 +2,68 @@ import React, { useState } from 'react';
 import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
 const PRODUCTS = [
+  // Fashion Items (Jeans, Shirts, Jackets, Full Sleeve & Round Neck T-Shirts)
+  {
+    id: 301,
+    name: 'Slim-Fit Stretch Denim Jeans',
+    category: 'Fashion',
+    subCategory: 'Jeans',
+    price: 69.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1542272604-780c36856842?auto=format&fit=crop&w=600&q=80',
+    description: 'Classic indigo blue stretch denim with 5-pocket styling and tapered fit.'
+  },
+  {
+    id: 302,
+    name: 'Premium Cotton Oxford Button-Down Shirt',
+    category: 'Fashion',
+    subCategory: 'Shirts',
+    price: 59.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
+    description: 'Crisp 100% Egyptian cotton formal button-down shirt with tailored fit.'
+  },
+  {
+    id: 303,
+    name: 'Classic Biker Leather Jacket',
+    category: 'Fashion',
+    subCategory: 'Jackets',
+    price: 249.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
+    description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
+  },
+  {
+    id: 304,
+    name: 'Classic Vintage Denim Trucker Jacket',
+    category: 'Fashion',
+    subCategory: 'Jackets',
+    price: 119.00,
+    rating: 4.7,
+    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=600&q=80',
+    description: 'Heavyweight washed denim trucker jacket with brass button closures.'
+  },
+  {
+    id: 305,
+    name: 'Thermal Full Sleeve Crewneck T-Shirt',
+    category: 'Fashion',
+    subCategory: 'Full Sleeve T-Shirts',
+    price: 39.00,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
+    description: 'Soft combed cotton full sleeve t-shirt with ribbed cuffs and breathable fabric.'
+  },
+  {
+    id: 306,
+    name: 'Premium Heavyweight Cotton Round Neck T-Shirt',
+    category: 'Fashion',
+    subCategory: 'Round Neck T-Shirts',
+    price: 29.00,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+    description: 'Minimalist 220 GSM bio-washed cotton round neck basic t-shirt.'
+  },
+
   // Electronics
   {
     id: 101,
@@ -42,35 +104,6 @@ const PRODUCTS = [
     description: 'Galaxy AI features, integrated S Pen, and 200MP camera resolution.'
   },
 
-  // Fashion
-  {
-    id: 301,
-    name: 'Classic Biker Leather Jacket',
-    category: 'Fashion',
-    price: 249.00,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
-    description: '100% genuine lambskin leather with vintage asymmetrical metal zippers.'
-  },
-  {
-    id: 302,
-    name: 'Designer Italian Polarized Sunglasses',
-    category: 'Fashion',
-    price: 159.00,
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80',
-    description: 'Hand-crafted acetate frame with UV400 anti-glare polarized lenses.'
-  },
-  {
-    id: 303,
-    name: 'Classic Silk Printed Scarf',
-    category: 'Fashion',
-    price: 89.00,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80',
-    description: 'Pure Mulberry silk scarf with hand-rolled edges and vibrant motif.'
-  },
-
   // Chocolates
   {
     id: 401,
@@ -109,7 +142,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
     phone: '+1 (555) 333-4444'
   });
 
-  const categories = ['All', 'Electronics', 'Mobiles', 'Fashion', 'Chocolates'];
+  const categories = ['All', 'Fashion', 'Electronics', 'Mobiles', 'Chocolates'];
 
   const filteredProducts = selectedCategory === 'All' 
     ? PRODUCTS 
@@ -156,10 +189,10 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
-              Premium Indian Marketplace
+              Premium Fashion & Lifestyle Store
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore Electronics, Mobiles, Fashion & Gourmet Chocolates.
+              Featuring Jeans, Cotton Shirts, Leather & Denim Jackets, Full Sleeve & Round Neck T-Shirts.
             </p>
           </div>
 
@@ -198,7 +231,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                   ★ {product.rating}
                 </span>
                 <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.75)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
-                  {product.category}
+                  {product.subCategory || product.category}
                 </span>
               </div>
 
