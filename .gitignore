@@ -1,0 +1,26 @@
+# Node & Frontend dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Spring Boot & Java builds
+springboot-server/target/
+springboot-server/.settings/
+springboot-server/.classpath
+springboot-server/.project
+springboot-server/bin/
+springboot-server/data/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
