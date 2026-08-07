@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
-const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80';
+const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80';
 
 const PRODUCTS = [
-  // Home Appliances (Refrigerators, Washing Machines, ACs)
+  // Home Appliances
   {
     id: 501,
     name: 'Samsung 580L Double Door Convertible Refrigerator',
@@ -13,8 +13,8 @@ const PRODUCTS = [
     brand: 'Samsung',
     price: 899.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=600&q=80',
-    description: 'Frost-free double door refrigerator with Twin Cooling Plus technology and digital inverter compressor.'
+    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80',
+    description: 'Frost-free double door stainless steel refrigerator with Twin Cooling Plus.'
   },
   {
     id: 502,
@@ -111,7 +111,7 @@ const PRODUCTS = [
     description: 'Soft single jersey cotton round neck t-shirt featuring the iconic Trefoil logo.'
   },
 
-  // Jackets & Full Sleeves
+  // Jackets
   {
     id: 307,
     name: 'Classic Biker Lambskin Leather Jacket',
@@ -247,7 +247,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               Premium Indian Superstore
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Explore Appliances (Refrigerators, Washing Machines, ACs), Fashion & Tech.
+              Explore High-Resolution Refrigerators, Washing Machines, ACs, Fashion & Mobiles.
             </p>
           </div>
 
@@ -275,15 +275,15 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         {/* Product Cards Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.5rem' }}>
           {filteredProducts.map(product => (
-            <div key={product.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <div style={{ height: '180px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1rem', position: 'relative', background: '#f1f5f9' }}>
+            <div key={product.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+              <div style={{ height: '200px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1rem', position: 'relative', background: '#f1f5f9' }}>
                 <img 
                   src={product.image} 
                   alt={product.name}
                   onError={handleImageError}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
                 />
-                <span className="badge badge-gold" style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                <span className="badge badge-gold" style={{ position: 'absolute', top: '10px', left: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                   ★ {product.rating}
                 </span>
                 <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.85)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
