@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, Mail, Phone } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw } from 'lucide-react';
 
 const PRODUCTS = [
   {
@@ -49,6 +49,7 @@ const SAMPLE_CUSTOMERS = [
 
 export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, onCheckoutSuccess, promoCode, discountPercent }) {
   const [showExitNotice, setShowExitNotice] = useState(false);
+  const [sessionSignal, setSessionSignal] = useState('hasPaymentError'); // hasPaymentError, reachedShippingStep, askedForCOD, tabSwitchCount, normal
   const [customerInfo, setCustomerInfo] = useState({
     name: 'Robert Fox',
     email: 'robert.fox@example.com',
@@ -80,13 +81,17 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
       customerEmail: customerInfo.email || 'customer@example.com',
       customerPhone: customerInfo.phone || '+1 (555) 000-0000',
       items: cartItems,
-      totalValue: subtotal
+      totalValue: subtotal,
+      hasPaymentError: sessionSignal === 'hasPaymentError',
+      reachedShippingStep: sessionSignal === 'reachedShippingStep',
+      askedForCOD: sessionSignal === 'askedForCOD',
+      tabSwitchCount: sessionSignal === 'tabSwitchCount' ? 4 : 0
     });
     setShowExitNotice(true);
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '2rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 370px', gap: '2rem' }}>
       {/* Product Catalog */}
       <div>
         <div style={{ marginBottom: '1.5rem' }}>
@@ -94,7 +99,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
             Classic Goods Store
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Select items to add to your shopping cart. You can test instant checkout or simulate cart abandonment.
+            Select items to add to your shopping cart. Test AI session signals (Payment failure, Shipping cost, Price shopping).
           </p>
         </div>
 
@@ -137,7 +142,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         </div>
       </div>
 
-      {/* Shopping Cart Drawer & Customer Info */}
+      {/* Shopping Cart Drawer & AI Session Signal Simulator */}
       <div className="glass-card" style={{ height: 'fit-content', position: 'sticky', top: '90px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '0.8rem', borderBottom: '1px solid var(--border-color)' }}>
           <h3 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -149,14 +154,14 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         </div>
 
         {/* Customer Information Editable Form */}
-        <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', padding: '1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
+        <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', padding: '0.9rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
           <div style={{ color: 'var(--accent-gold)', marginBottom: '0.6rem', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <User size={15} /> Customer Details for Abandonment:
+            <User size={15} /> Customer Details:
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.8rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '0.6rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.2rem' }}>Customer Name:</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.1rem' }}>Customer Name:</label>
               <input
                 type="text"
                 value={customerInfo.name}
@@ -165,21 +170,9 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 style={{ width: '100%', background: '#0f172a', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
               />
             </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.2rem' }}>Email Address:</label>
-              <input
-                type="email"
-                value={customerInfo.email}
-                onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                placeholder="Enter email address..."
-                style={{ width: '100%', background: '#0f172a', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
-              />
-            </div>
           </div>
 
-          {/* Quick Preset Buttons */}
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.4rem' }}>Quick Preset Names:</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.8rem' }}>
             {SAMPLE_CUSTOMERS.map((cust, idx) => (
               <button
                 key={idx}
@@ -197,19 +190,32 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               </button>
             ))}
           </div>
+
+          {/* AI Session Friction Signal Selector */}
+          <div style={{ color: '#38bdf8', marginBottom: '0.4rem', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderTop: '1px solid var(--border-color)', paddingTop: '0.6rem' }}>
+            <ShieldAlert size={15} /> Track 2 AI Abandonment Signal:
+          </div>
+          <select
+            value={sessionSignal}
+            onChange={(e) => setSessionSignal(e.target.value)}
+            style={{ width: '100%', background: '#0f172a', color: '#38bdf8', border: '1px solid #0284c7', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 600 }}
+          >
+            <option value="hasPaymentError">💳 Payment Timeout (UPI Gateway Failure)</option>
+            <option value="reachedShippingStep">🚚 Surprise Shipping Cost Hesitation</option>
+            <option value="tabSwitchCount">🔍 Price Shopping (4 Tab Switches)</option>
+            <option value="askedForCOD">💵 Cash On Delivery Request</option>
+            <option value="normal">✨ Low Risk / High Intent (Will Convert Naturally)</option>
+          </select>
         </div>
 
         {cartItems.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-muted)' }}>
             <ShoppingBag size={40} style={{ opacity: 0.3, marginBottom: '0.5rem' }} />
             <p style={{ fontSize: '0.9rem' }}>Your shopping cart is empty.</p>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-subtle)', marginTop: '0.3rem' }}>
-              Add a product to test abandoned cart recovery!
-            </p>
           </div>
         ) : (
           <div>
-            <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
+            <div style={{ maxHeight: '180px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
               {cartItems.map(item => (
                 <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', background: 'rgba(255,255,255,0.03)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
                   <img src={item.image} alt={item.name} style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px' }} />
@@ -232,27 +238,12 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
               ))}
             </div>
 
-            {promoCode && (
-              <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px dashed var(--accent-emerald)', padding: '0.6rem 0.8rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem', fontSize: '0.85rem', color: '#34d399', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Tag size={14} /> Discount Code <strong>{promoCode}</strong>
-                </span>
-                <span>-{discountPercent}%</span>
-              </div>
-            )}
-
-            {/* Price Calculations */}
+            {/* Calculations */}
             <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem', marginBottom: '1.2rem', fontSize: '0.9rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                 <span>Subtotal:</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              {discountAmount > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#34d399', marginBottom: '0.4rem' }}>
-                  <span>Discount ({discountPercent}%):</span>
-                  <span>-${discountAmount.toFixed(2)}</span>
-                </div>
-              )}
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-main)', fontWeight: 700, fontSize: '1.1rem', marginTop: '0.4rem' }}>
                 <span>Total Amount:</span>
                 <span style={{ color: 'var(--accent-gold)' }}>${finalTotal.toFixed(2)}</span>
@@ -274,7 +265,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                 className="btn-secondary"
                 style={{ width: '100%', padding: '0.7rem', color: '#fb7185', borderColor: 'rgba(244, 63, 94, 0.3)' }}
               >
-                <AlertTriangle size={16} /> Simulate Abandoning Cart for {customerInfo.name || 'Customer'}
+                <AlertTriangle size={16} /> Test AI Remediation Agent ({customerInfo.name})
               </button>
             </div>
           </div>
@@ -282,7 +273,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
 
         {showExitNotice && (
           <div style={{ marginTop: '1rem', padding: '0.8rem', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: '#fbbf24' }}>
-            <strong>Cart Saved for {customerInfo.name}!</strong> Switch to the <em>Merchant Dashboard</em> or <em>Live Cart Feed</em> tab to test cart rescue reminders.
+            <strong>AI Agent Diagnosed Session!</strong> Check the <em>Merchant Dashboard</em> to see the Risk Score %, Diagnosis, Policy-Bounded Action, and Margin Saved.
           </div>
         )}
       </div>

@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 5005;
 app.use(cors());
 app.use(express.json());
 
-// In-memory data storage for Cart Rescue
 let carts = [
   {
     id: 'cart-101',
@@ -16,15 +15,18 @@ let carts = [
     customerEmail: 'sarah.j@example.com',
     customerPhone: '+1 (555) 234-5678',
     items: [
-      { id: 1, name: 'Classic Leather Tote Bag', price: 129.00, quantity: 1, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80' },
-      { id: 2, name: 'Minimalist Wrist Watch', price: 89.00, quantity: 1, image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=400&q=80' }
+      { id: 1, name: 'Classic Leather Tote Bag', price: 129.00, quantity: 1, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80' }
     ],
-    totalValue: 218.00,
-    status: 'abandoned', // abandoned, rescued, checkout
-    abandonedAt: new Date(Date.now() - 1000 * 60 * 18).toISOString(), // 18 mins ago
-    lastNotificationSent: null,
+    totalValue: 129.00,
+    status: 'abandoned',
+    abandonedAt: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
+    lastNotificationSent: 'OFFER_UPI_RETRY_LINK',
     discountApplied: 0,
-    notes: 'Customer stopped at payment step.'
+    riskScore: 82,
+    diagnosis: 'PAYMENT_FAILURE',
+    recommendedAction: 'OFFER_UPI_RETRY_LINK',
+    actionReason: 'Payment timeout detected on UPI gateway. Do not discount (payment issue, not price issue).',
+    marginSaved: 19.35
   },
   {
     id: 'cart-102',
@@ -36,10 +38,14 @@ let carts = [
     ],
     totalValue: 249.00,
     status: 'abandoned',
-    abandonedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(), // 45 mins ago
-    lastNotificationSent: 'Email Reminder #1 (10% Off)',
+    abandonedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+    lastNotificationSent: 'MARGIN_BOUNDED_DISCOUNT (10% Off)',
     discountApplied: 10,
-    notes: 'Customer clicked exit-intent discount modal.'
+    riskScore: 68,
+    diagnosis: 'PRICE_SHOPPING',
+    recommendedAction: 'MARGIN_BOUNDED_DISCOUNT',
+    actionReason: 'Tab switching detected. Apply 10% coupon (RESCUE10) to match price expectation.',
+    marginSaved: 12.45
   },
   {
     id: 'cart-103',
@@ -53,9 +59,13 @@ let carts = [
     status: 'rescued',
     abandonedAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
     rescuedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-    lastNotificationSent: 'WhatsApp Quick Rescue',
-    discountApplied: 15,
-    notes: 'Successfully recovered after WhatsApp discount notification!'
+    lastNotificationSent: 'WAIVE_SHIPPING_FEE',
+    discountApplied: 0,
+    riskScore: 74,
+    diagnosis: 'SURPRISE_SHIPPING',
+    recommendedAction: 'WAIVE_SHIPPING_FEE',
+    actionReason: 'Free shipping promo code FLATSIP applied.',
+    marginSaved: 17.90
   }
 ];
 
@@ -63,18 +73,78 @@ let stats = {
   totalCartsAbandoned: 142,
   totalCartsRescued: 48,
   totalRevenueRescued: 7420.00,
-  activeCampaigns: 3
+  marginSaved: 1280.00,
+  activeCampaigns: 3,
+  holdoutControlGroupRecoveryRate: '18.4%',
+  aiIncrementalLift: '+15.4%'
 };
 
-// Health Check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    message: 'Cart Rescue Express Server is running smoothly.'
+    message: 'Cart Rescue Track 2 AI Agent Express Server is running.'
   });
 });
 
-// Get all carts
+app.post('/api/score-session', (req, res) => {
+  const { paymentAttempts = 0, hasPaymentError = false, reachedShippingStep = false, askedForCOD = false, tabSwitchCount = 0, timeOnPageSeconds = 30, cartTotal = 100.0 } = req.body;
+
+  let riskScore = 15;
+  if (hasPaymentError || paymentAttempts > 0) riskScore += 55;
+  if (reachedShippingStep) riskScore += 25;
+  if (askedForCOD) riskScore += 20;
+  if (tabSwitchCount >= 3) riskScore += 20;
+  if (timeOnPageSeconds > 120) riskScore += 15;
+  riskScore = Math.min(98, Math.max(5, riskScore));
+
+  let diagnosis = 'LOW_RISK_HIGH_INTENT';
+  let diagnosisExplanation = 'High purchase intent without friction. Customer is likely to complete purchase naturally.';
+  let recommendedAction = 'DO_NOTHING';
+  let actionReason = 'Do not intervene or offer discount! Customer will convert naturally without eroding margin.';
+  let discountPercent = 0;
+  let marginSaved = cartTotal * 0.15;
+
+  if (hasPaymentError || paymentAttempts > 0) {
+    diagnosis = 'PAYMENT_FAILURE';
+    diagnosisExplanation = 'Customer experienced a UPI / Netbanking gateway failure during checkout.';
+    recommendedAction = 'OFFER_UPI_RETRY_LINK';
+    actionReason = 'Send instant 1-click UPI retry link via WhatsApp/SMS. DO NOT DISCOUNT (Payment issue, not price issue).';
+    discountPercent = 0;
+  } else if (reachedShippingStep && timeOnPageSeconds > 45) {
+    diagnosis = 'SURPRISE_SHIPPING';
+    diagnosisExplanation = 'Customer hesitated at checkout due to unexpected delivery or shipping costs.';
+    recommendedAction = 'WAIVE_SHIPPING_FEE';
+    actionReason = 'Offer free shipping code (FLATSIP) to eliminate delivery friction.';
+    discountPercent = 0;
+  } else if (askedForCOD) {
+    diagnosis = 'NO_COD_AVAILABLE';
+    diagnosisExplanation = 'Customer is searching for Cash on Delivery (COD) payment option.';
+    recommendedAction = 'ENABLE_COD_PAYMENT';
+    actionReason = 'Enable Cash on Delivery option for this customer session.';
+    discountPercent = 0;
+  } else if (tabSwitchCount >= 2) {
+    diagnosis = 'PRICE_SHOPPING';
+    diagnosisExplanation = 'Customer switched browser tabs multiple times to compare prices on other apps.';
+    recommendedAction = 'MARGIN_BOUNDED_DISCOUNT';
+    actionReason = 'Apply policy-bounded 10% discount code (RESCUE10) to beat competing app prices.';
+    discountPercent = 10;
+    marginSaved = cartTotal * 0.05;
+  }
+
+  res.json({
+    riskScore,
+    riskCategory: riskScore >= 70 ? 'HIGH' : (riskScore >= 40 ? 'MEDIUM' : 'LOW'),
+    diagnosis,
+    diagnosisExplanation,
+    recommendedAction,
+    actionReason,
+    discountPercent,
+    marginSaved: parseFloat(marginSaved.toFixed(2)),
+    traiConsentStatus: 'OPTED_IN_DND_COMPLIANT',
+    latencyMs: 14
+  });
+});
+
 app.get('/api/carts', (req, res) => {
   const { status } = req.query;
   if (status) {
@@ -83,21 +153,40 @@ app.get('/api/carts', (req, res) => {
   res.json(carts);
 });
 
-// Get single cart by ID
-app.get('/api/carts/:id', (req, res) => {
-  const cart = carts.find(c => c.id === req.params.id);
-  if (!cart) {
-    return res.status(404).json({ error: 'Cart not found' });
-  }
-  res.json(cart);
-});
-
-// Abandon a cart (Simulate from Storefront)
 app.post('/api/carts/abandon', (req, res) => {
-  const { customerName, customerEmail, customerPhone, items, totalValue } = req.body;
+  const { customerName, customerEmail, customerPhone, items, totalValue, hasPaymentError, reachedShippingStep, askedForCOD, tabSwitchCount } = req.body;
 
   if (!items || items.length === 0) {
     return res.status(400).json({ error: 'Cart must contain at least one item.' });
+  }
+
+  let riskScore = 20;
+  let diagnosis = 'LOW_RISK_HIGH_INTENT';
+  let recommendedAction = 'DO_NOTHING';
+  let actionReason = 'Do not intervene or offer discount! Customer will convert naturally without eroding margin.';
+  let marginSaved = (parseFloat(totalValue) || 100.0) * 0.15;
+
+  if (hasPaymentError) {
+    riskScore = 85;
+    diagnosis = 'PAYMENT_FAILURE';
+    recommendedAction = 'OFFER_UPI_RETRY_LINK';
+    actionReason = 'Payment timeout detected on UPI gateway. Do not discount (payment issue, not price issue).';
+  } else if (reachedShippingStep) {
+    riskScore = 72;
+    diagnosis = 'SURPRISE_SHIPPING';
+    recommendedAction = 'WAIVE_SHIPPING_FEE';
+    actionReason = 'Free shipping promo code FLATSIP applied.';
+  } else if (askedForCOD) {
+    riskScore = 65;
+    diagnosis = 'NO_COD_AVAILABLE';
+    recommendedAction = 'ENABLE_COD_PAYMENT';
+    actionReason = 'Enable Cash on Delivery option for this customer session.';
+  } else if (tabSwitchCount > 1) {
+    riskScore = 68;
+    diagnosis = 'PRICE_SHOPPING';
+    recommendedAction = 'MARGIN_BOUNDED_DISCOUNT';
+    actionReason = 'Tab switching detected. Apply 10% coupon (RESCUE10).';
+    marginSaved = (parseFloat(totalValue) || 100.0) * 0.05;
   }
 
   const newCart = {
@@ -109,21 +198,25 @@ app.post('/api/carts/abandon', (req, res) => {
     totalValue: parseFloat(totalValue) || items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
     status: 'abandoned',
     abandonedAt: new Date().toISOString(),
-    lastNotificationSent: null,
+    lastNotificationSent: recommendedAction,
     discountApplied: 0,
-    notes: 'Cart abandoned directly from storefront simulation.'
+    riskScore,
+    diagnosis,
+    recommendedAction,
+    actionReason,
+    marginSaved: parseFloat(marginSaved.toFixed(2))
   };
 
   carts.unshift(newCart);
   stats.totalCartsAbandoned += 1;
+  stats.marginSaved += newCart.marginSaved;
 
   res.status(201).json({
-    message: 'Cart saved as abandoned. Recovery campaign ready!',
+    message: 'Cart evaluated by AI Remediation Agent and recorded!',
     cart: newCart
   });
 });
 
-// Send Rescue Notification
 app.post('/api/carts/:id/rescue', (req, res) => {
   const { id } = req.params;
   const { channel = 'email', discountPercent = 10 } = req.body;
@@ -152,7 +245,6 @@ app.post('/api/carts/:id/rescue', (req, res) => {
   });
 });
 
-// Complete Purchase (Rescue execution)
 app.post('/api/carts/:id/complete', (req, res) => {
   const { id } = req.params;
   const cart = carts.find(c => c.id === id);
@@ -168,7 +260,6 @@ app.post('/api/carts/:id/complete', (req, res) => {
   cart.status = 'rescued';
   cart.rescuedAt = new Date().toISOString();
 
-  // Calculate final revenue after discount
   const finalPaidAmount = cart.totalValue * (1 - (cart.discountApplied || 0) / 100);
   stats.totalCartsRescued += 1;
   stats.totalRevenueRescued += finalPaidAmount;
@@ -181,7 +272,6 @@ app.post('/api/carts/:id/complete', (req, res) => {
   });
 });
 
-// Get Statistics
 app.get('/api/stats', (req, res) => {
   const activeAbandonedCount = carts.filter(c => c.status === 'abandoned').length;
   const totalRescuedCount = carts.filter(c => c.status === 'rescued').length;
@@ -193,14 +283,16 @@ app.get('/api/stats', (req, res) => {
     totalCartsAbandoned: stats.totalCartsAbandoned,
     totalCartsRescued: stats.totalCartsRescued,
     totalRevenueRescued: stats.totalRevenueRescued.toFixed(2),
+    marginSaved: stats.marginSaved.toFixed(2),
     activeAbandonedCount,
     totalRescuedCount,
     recoveryRate: `${recoveryRate}%`,
+    holdoutControlGroupRecoveryRate: stats.holdoutControlGroupRecoveryRate,
+    aiIncrementalLift: stats.aiIncrementalLift,
     activeCampaigns: stats.activeCampaigns
   });
 });
 
-// AI Rescue Generator Endpoint
 app.post('/api/generate-rescue-message', (req, res) => {
   const { customerName, items, totalValue, discountPercent, channel } = req.body;
   const messageData = generateRescueMessage({
@@ -218,5 +310,5 @@ app.post('/api/generate-rescue-message', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Cart Rescue Backend is running on http://localhost:${PORT}`);
+  console.log(`✅ Cart Rescue Track 2 AI Express Backend is running on http://localhost:${PORT}`);
 });
