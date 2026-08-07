@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
 
+const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80';
+
 const PRODUCTS = [
-  // Fashion Items (Jeans, Shirts, Jackets, Full Sleeve & Round Neck T-Shirts)
+  // Fashion Items
   {
     id: 301,
     name: 'Slim-Fit Stretch Denim Jeans',
@@ -10,7 +12,7 @@ const PRODUCTS = [
     subCategory: 'Jeans',
     price: 69.00,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1542272604-780c36856842?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80',
     description: 'Classic indigo blue stretch denim with 5-pocket styling and tapered fit.'
   },
   {
@@ -20,7 +22,7 @@ const PRODUCTS = [
     subCategory: 'Shirts',
     price: 59.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
     description: 'Crisp 100% Egyptian cotton formal button-down shirt with tailored fit.'
   },
   {
@@ -69,6 +71,7 @@ const PRODUCTS = [
     id: 101,
     name: 'Sony WH-1000XM5 Wireless Headphones',
     category: 'Electronics',
+    subCategory: 'Headphones',
     price: 349.00,
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
@@ -78,29 +81,32 @@ const PRODUCTS = [
     id: 102,
     name: 'Bose SoundLink Portable Speaker',
     category: 'Electronics',
+    subCategory: 'Speakers',
     price: 149.00,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80',
     description: 'Deep, immersive 360° sound in a water-resistant aluminum body.'
   },
   
   // Mobiles
   {
     id: 201,
-    name: 'iPhone 15 Pro Max (256GB Titanium)',
+    name: 'iPhone 15 Pro Max Titanium',
     category: 'Mobiles',
+    subCategory: 'Smartphones',
     price: 1199.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80',
     description: 'A17 Pro chip, Aerospace-grade titanium design, and 5x Telephoto camera.'
   },
   {
     id: 202,
     name: 'Samsung Galaxy S24 Ultra 5G',
     category: 'Mobiles',
+    subCategory: 'Smartphones',
     price: 1299.00,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80',
     description: 'Galaxy AI features, integrated S Pen, and 200MP camera resolution.'
   },
 
@@ -109,18 +115,20 @@ const PRODUCTS = [
     id: 401,
     name: 'Swiss Dark Chocolate Truffles Box',
     category: 'Chocolates',
+    subCategory: 'Truffles',
     price: 45.00,
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80',
     description: '24-piece artisan truffles crafted with 70% Single-Origin cocoa & ganache.'
   },
   {
     id: 402,
     name: 'Artisan Roasted Hazelnut Pralines',
     category: 'Chocolates',
+    subCategory: 'Pralines',
     price: 38.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=600&q=80',
     description: 'Caramelized Piedmont hazelnuts coated in creamy Belgian milk chocolate.'
   }
 ];
@@ -147,6 +155,11 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
   const filteredProducts = selectedCategory === 'All' 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === selectedCategory);
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = DEFAULT_FALLBACK_IMAGE;
+  };
 
   const addToCart = (product) => {
     setCartItems(prev => {
@@ -189,10 +202,10 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h2 className="title-serif" style={{ fontSize: '1.8rem', color: 'var(--text-main)' }}>
-              Premium Fashion & Lifestyle Store
+              Premium Marketplace Catalog
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-              Featuring Jeans, Cotton Shirts, Leather & Denim Jackets, Full Sleeve & Round Neck T-Shirts.
+              Explore High-Resolution Fashion, Mobiles, Electronics & Chocolates.
             </p>
           </div>
 
@@ -221,16 +234,17 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1.5rem' }}>
           {filteredProducts.map(product => (
             <div key={product.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <div style={{ height: '180px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1rem', position: 'relative' }}>
+              <div style={{ height: '180px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1rem', position: 'relative', background: '#f1f5f9' }}>
                 <img 
                   src={product.image} 
-                  alt={product.name} 
+                  alt={product.name}
+                  onError={handleImageError}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
                 <span className="badge badge-gold" style={{ position: 'absolute', top: '10px', left: '10px' }}>
                   ★ {product.rating}
                 </span>
-                <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.75)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
+                <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'rgba(15,23,42,0.85)', color: '#ffffff', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 600 }}>
                   {product.subCategory || product.category}
                 </span>
               </div>
@@ -334,7 +348,12 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
             <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '0.3rem' }}>
               {cartItems.map(item => (
                 <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem', background: '#f8fafc', padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #f1f5f9' }}>
-                  <img src={item.image} alt={item.name} style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px' }} />
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    onError={handleImageError}
+                    style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px' }} 
+                  />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '0.85rem', fontWeight: 600, textOverflow: 'ellipsis', overflow: 'hidden', whitespace: 'nowrap' }}>
                       {item.name}
