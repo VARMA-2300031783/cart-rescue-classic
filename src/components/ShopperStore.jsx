@@ -13,7 +13,7 @@ const PRODUCTS = [
     brand: 'Daikin',
     price: 749.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1631545806606-444736f1c496?auto=format&fit=crop&w=600&q=80',
     description: '3D airflow wall-mounted inverter split air conditioner with PM 2.5 filter.'
   },
   {
