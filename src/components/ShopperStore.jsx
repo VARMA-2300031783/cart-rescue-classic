@@ -13,7 +13,7 @@ const PRODUCTS = [
     brand: 'Samsung',
     price: 899.00,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=600&q=80',
     description: 'Frost-free double door stainless steel refrigerator with Twin Cooling Plus.'
   },
   {
