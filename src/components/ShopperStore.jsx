@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, ArrowRight, AlertTriangle, CheckCircle, Tag, Sparkles, User, ShieldAlert, CreditCard, Truck, RefreshCw, Star, Layers, Mail, Phone } from 'lucide-react';
 
 const DEFAULT_FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=600&q=80';
 
@@ -220,9 +220,9 @@ const PRODUCTS = [
 ];
 
 const SAMPLE_CUSTOMERS = [
-  { name: 'Robert Fox', email: 'robert.fox@example.com', phone: '+91 98765 43210' },
-  { name: 'Emily Clark', email: 'emily.c@example.com', phone: '+91 98765 12345' },
-  { name: 'Michael Scott', email: 'michael.s@example.com', phone: '+91 98765 67890' },
+  { name: 'Varma', email: 'varma@example.com', phone: '+91 98765 43210' },
+  { name: 'Kalyan', email: 'kalyan@example.com', phone: '+91 98765 12345' },
+  { name: 'Trinadh', email: 'trinadh@example.com', phone: '+91 98765 67890' },
   { name: 'Alex Morgan', email: 'alex.m@example.com', phone: '+91 98765 11223' }
 ];
 
@@ -231,8 +231,8 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
   const [showExitNotice, setShowExitNotice] = useState(false);
   const [sessionSignal, setSessionSignal] = useState('hasPaymentError');
   const [customerInfo, setCustomerInfo] = useState({
-    name: 'Robert Fox',
-    email: 'robert.fox@example.com',
+    name: 'Varma',
+    email: 'varma@example.com',
     phone: '+91 98765 43210'
   });
 
@@ -369,26 +369,49 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           </span>
         </div>
 
-        {/* Customer Information Form */}
+        {/* Customer Information Form with Name, Email, & Phone Inputs */}
         <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '0.9rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
           <div style={{ color: 'var(--accent-gold)', marginBottom: '0.6rem', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <User size={15} /> Customer Details:
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '0.6rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.6rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.1rem' }}>Customer Name:</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.1rem', fontWeight: 600 }}>Customer Name:</label>
               <input
                 type="text"
                 value={customerInfo.name}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
                 placeholder="Enter customer name..."
-                style={{ width: '100%', background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+                style={{ width: '100%', background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.65rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.1rem', fontWeight: 600 }}>Customer Email:</label>
+              <input
+                type="email"
+                value={customerInfo.email}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                placeholder="Enter customer email address..."
+                style={{ width: '100%', background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.65rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-subtle)', marginBottom: '0.1rem', fontWeight: 600 }}>Customer Phone (+91):</label>
+              <input
+                type="text"
+                value={customerInfo.phone}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                placeholder="+91 98765 43210..."
+                style={{ width: '100%', background: '#ffffff', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.65rem', borderRadius: 'var(--radius-sm)', fontSize: '0.85rem' }}
               />
             </div>
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.8rem' }}>
+            <span style={{ width: '100%', fontSize: '0.72rem', color: 'var(--text-subtle)', marginBottom: '0.1rem' }}>Quick presets:</span>
             {SAMPLE_CUSTOMERS.map((cust, idx) => (
               <button
                 key={idx}
@@ -397,7 +420,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
                   background: customerInfo.name === cust.name ? 'var(--accent-gold)' : '#e2e8f0',
                   color: customerInfo.name === cust.name ? '#ffffff' : 'var(--text-main)',
                   fontSize: '0.72rem',
-                  padding: '0.2rem 0.5rem',
+                  padding: '0.25rem 0.55rem',
                   borderRadius: 'var(--radius-sm)',
                   fontWeight: 600
                 }}
@@ -414,7 +437,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
           <select
             value={sessionSignal}
             onChange={(e) => setSessionSignal(e.target.value)}
-            style={{ width: '100%', background: '#ffffff', color: '#0284c7', border: '1px solid #0284c7', padding: '0.4rem 0.6rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 600 }}
+            style={{ width: '100%', background: '#ffffff', color: '#0284c7', border: '1px solid #0284c7', padding: '0.45rem 0.65rem', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', fontWeight: 600 }}
           >
             <option value="hasPaymentError">💳 Payment Timeout (UPI Gateway Failure)</option>
             <option value="reachedShippingStep">🚚 Surprise Shipping Cost Hesitation</option>
@@ -494,7 +517,7 @@ export default function ShopperStore({ cartItems, setCartItems, onAbandonCart, o
 
         {showExitNotice && (
           <div style={{ marginTop: '1rem', padding: '0.8rem', background: '#fef3c7', border: '1px solid #fde68a', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', color: '#b45309' }}>
-            <strong>AI Agent Diagnosed Session!</strong> Check the <em>Merchant Dashboard</em> to see the Risk Score %, Diagnosis, Policy-Bounded Action, and Margin Saved.
+            <strong>AI Agent Diagnosed Session!</strong> Saved for {customerInfo.email}. Check the <em>Merchant Dashboard</em> to see the Risk Score %, Diagnosis, Policy-Bounded Action, and Margin Saved.
           </div>
         )}
       </div>
