@@ -1,7 +1,7 @@
 import React from 'react';
-import { ShoppingCart, LayoutDashboard, Radio, Zap, ShieldCheck } from 'lucide-react';
+import { ShoppingCart, LayoutDashboard, Radio, Zap, ShieldCheck, LogIn, LogOut, User } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedRevenue, activeAbandonedCount }) {
+export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedRevenue, activeAbandonedCount, user, onLogout }) {
   return (
     <header style={{
       background: '#ffffff',
@@ -22,7 +22,10 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
         gap: '1rem'
       }}>
         {/* Brand Title */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+        <div 
+          onClick={() => setActiveTab('storefront')}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}
+        >
           <div style={{
             background: 'linear-gradient(135deg, var(--accent-gold) 0%, #b45309 100%)',
             width: '42px',
@@ -47,6 +50,25 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
 
         {/* Navigation Tabs */}
         <nav style={{ display: 'flex', gap: '0.4rem', background: '#f1f5f9', padding: '0.3rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+          <button
+            onClick={() => setActiveTab('login')}
+            style={{
+              padding: '0.55rem 1rem',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.88rem',
+              fontWeight: 600,
+              background: activeTab === 'login' ? '#ffffff' : 'transparent',
+              color: activeTab === 'login' ? 'var(--accent-gold)' : 'var(--text-muted)',
+              boxShadow: activeTab === 'login' ? 'var(--shadow-sm)' : 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem'
+            }}
+          >
+            <LogIn size={16} />
+            Login Portal
+          </button>
+
           <button
             onClick={() => setActiveTab('storefront')}
             style={{
@@ -122,8 +144,8 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
           </button>
         </nav>
 
-        {/* Quick Merchant Metric Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {/* Quick User Profile & Rescued Sales Badge */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
           <div style={{
             background: '#d1fae5',
             border: '1px solid #a7f3d0',
@@ -137,8 +159,40 @@ export default function Navbar({ activeTab, setActiveTab, cartCount, rescuedReve
             fontWeight: 600
           }}>
             <ShieldCheck size={16} />
-            <span>Rescued Sales: <strong>₹{rescuedRevenue}</strong></span>
+            <span>Rescued: <strong>₹{rescuedRevenue}</strong></span>
           </div>
+
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#f8fafc', padding: '0.35rem 0.65rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+              <User size={15} color="var(--accent-gold)" />
+              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-main)' }}>
+                {user.name}
+              </span>
+              <button
+                onClick={onLogout}
+                title="Sign Out"
+                style={{
+                  background: 'transparent',
+                  color: 'var(--accent-rose)',
+                  padding: '0.2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  border: 'none'
+                }}
+              >
+                <LogOut size={15} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setActiveTab('login')}
+              className="btn-secondary"
+              style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </header>

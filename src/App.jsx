@@ -6,17 +6,24 @@ import MerchantDashboard from './components/MerchantDashboard';
 import LiveCartFeed from './components/LiveCartFeed';
 import EmailPreviewModal from './components/EmailPreviewModal';
 import ExitIntentModal from './components/ExitIntentModal';
+import LoginPage from './components/LoginPage';
 import { AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
+  const [user, setUser] = useState({
+    name: 'Varma',
+    email: 'varma@example.com',
+    role: 'shopper'
+  });
+
   const [activeTab, setActiveTab] = useState('storefront');
   const [cartItems, setCartItems] = useState([
     {
-      id: 1,
-      name: 'Classic Leather Tote Bag',
-      price: 129.00,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80'
+      id: 401,
+      name: 'Cadbury Dairy Milk Silk Chocolate Bar',
+      price: 180.00,
+      quantity: 2,
+      image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=600&q=80'
     }
   ]);
 
@@ -24,7 +31,7 @@ export default function App() {
   const [discountPercent, setDiscountPercent] = useState(0);
   const [carts, setCarts] = useState([]);
   const [stats, setStats] = useState({
-    totalRevenueRescued: '7420.00',
+    totalRevenueRescued: '4,85,900',
     activeAbandonedCount: 2,
     totalRescuedCount: 48,
     recoveryRate: '33.8%'
@@ -65,6 +72,22 @@ export default function App() {
     const interval = setInterval(fetchBackendData, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    showToast(`Welcome ${userData.name}! Logged in as ${userData.role === 'merchant' ? 'Merchant Admin' : 'Shopper'}.`, 'success');
+    if (userData.role === 'merchant') {
+      setActiveTab('dashboard');
+    } else {
+      setActiveTab('storefront');
+    }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setActiveTab('login');
+    showToast('Signed out successfully.', 'warning');
+  };
 
   // Handle Cart Abandon Simulation
   const handleAbandonCart = async (abandonPayload) => {
@@ -126,7 +149,7 @@ export default function App() {
   // Handle Direct Storefront Checkout Success
   const handleCheckoutSuccess = (paidAmount) => {
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    showToast(`Thank you! Order of $${paidAmount.toFixed(2)} completed successfully.`, 'success');
+    showToast(`Thank you! Order of ₹${paidAmount.toLocaleString('en-IN')} completed successfully.`, 'success');
     setCartItems([]);
     setPromoCode('');
     setDiscountPercent(0);
@@ -147,6 +170,8 @@ export default function App() {
         cartCount={cartItems.length}
         rescuedRevenue={stats.totalRevenueRescued}
         activeAbandonedCount={stats.activeAbandonedCount || carts.filter(c => c.status === 'abandoned').length}
+        user={user}
+        onLogout={handleLogout}
       />
 
       {/* Global Notification Banner */}
@@ -175,6 +200,10 @@ export default function App() {
 
       {/* Main View Area */}
       <main className="main-content">
+        {activeTab === 'login' && (
+          <LoginPage onLoginSuccess={handleLoginSuccess} />
+        )}
+
         {activeTab === 'storefront' && (
           <ShopperStore
             cartItems={cartItems}
