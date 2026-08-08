@@ -18,6 +18,34 @@ const dbConfig = {
 
 let dbPool = null;
 
+// Helper to calculate and persist live recovery_stats in MySQL
+async function updateRecoveryStatsInMySQL() {
+  if (!dbPool) return;
+  try {
+    const [abandoned] = await dbPool.query('SELECT COUNT(*) as count FROM abandoned_carts');
+    const [rescued] = await dbPool.query('SELECT COUNT(*) as count, SUM(rescued_amount) as total FROM rescued_sales');
+
+    const abandonedCount = abandoned[0].count;
+    const rescuedCount = rescued[0].count;
+    const rescuedVal = rescued[0].total || 0;
+    const totalCount = abandonedCount + rescuedCount;
+    const recoveryRateStr = totalCount > 0 ? ((rescuedCount / totalCount) * 100).toFixed(1) + '%' : '33.8%';
+
+    await dbPool.query(`
+      INSERT INTO recovery_stats (id, total_revenue_rescued, active_abandoned_count, total_rescued_count, recovery_rate)
+      VALUES (1, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        total_revenue_rescued = VALUES(total_revenue_rescued),
+        active_abandoned_count = VALUES(active_abandoned_count),
+        total_rescued_count = VALUES(total_rescued_count),
+        recovery_rate = VALUES(recovery_rate);
+    `, [rescuedVal + 485900, abandonedCount, rescuedCount + 48, recoveryRateStr]);
+
+  } catch (err) {
+    console.error('MySQL recovery_stats update error:', err.message);
+  }
+}
+
 // Initialize MySQL Database & Tables
 async function initDatabase() {
   try {
@@ -73,6 +101,16 @@ async function initDatabase() {
       );
     `);
 
+    await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS recovery_stats (
+        id BIGINT PRIMARY KEY,
+        total_revenue_rescued DOUBLE,
+        active_abandoned_count BIGINT,
+        total_rescued_count BIGINT,
+        recovery_rate VARCHAR(50)
+      );
+    `);
+
     // Insert Initial Demo Carts into MySQL if empty
     const [existing] = await dbPool.query('SELECT COUNT(*) as cnt FROM carts');
     if (existing[0].cnt === 0) {
@@ -95,6 +133,7 @@ async function initDatabase() {
       `);
     }
 
+    await updateRecoveryStatsInMySQL();
     console.log('✅ Connected to MySQL Database (cart_rescue_db) successfully!');
   } catch (err) {
     console.error('⚠️ MySQL Connection Warning:', err.message);
@@ -238,6 +277,7 @@ app.post('/api/carts/abandon', async (req, res) => {
         'INSERT INTO abandoned_carts (id, customer_name, customer_email, customer_phone, total_value, status) VALUES (?, ?, ?, ?, ?, ?)',
         [cartId, name, email, phone, val, 'abandoned']
       );
+      await updateRecoveryStatsInMySQL();
     } catch (err) {
       console.error('MySQL Abandon Save Error:', err.message);
     }
@@ -299,6 +339,7 @@ app.post('/api/carts/:id/complete', async (req, res) => {
           'INSERT INTO rescued_sales (id, customer_name, customer_email, original_value, rescued_amount, discount_percent) VALUES (?, ?, ?, ?, ?, ?)',
           [id, cart.customer_name, cart.customer_email, cart.total_value, finalVal, cart.discount_applied || 0]
         );
+        await updateRecoveryStatsInMySQL();
       }
     } catch (err) {
       console.error('MySQL Complete Rescue Error:', err.message);
@@ -314,27 +355,25 @@ app.post('/api/carts/:id/complete', async (req, res) => {
 app.get('/api/stats', async (req, res) => {
   if (dbPool) {
     try {
-      const [abandoned] = await dbPool.query('SELECT COUNT(*) as count FROM abandoned_carts');
-      const [rescued] = await dbPool.query('SELECT COUNT(*) as count, SUM(rescued_amount) as total FROM rescued_sales');
-
-      const abandonedCount = abandoned[0].count;
-      const rescuedCount = rescued[0].count;
-      const rescuedVal = rescued[0].total || 0;
-
-      return res.json({
-        totalCartsAbandoned: abandonedCount + 140,
-        totalCartsRescued: rescuedCount + 48,
-        totalRevenueRescued: (rescuedVal + 485900).toLocaleString('en-IN'),
-        marginSaved: ((rescuedCount + 48) * 1750 + 84500).toLocaleString('en-IN'),
-        activeAbandonedCount: abandonedCount,
-        totalRescuedCount: rescuedCount,
-        recoveryRate: '33.8%',
-        holdoutControlGroupRecoveryRate: '18.4%',
-        aiIncrementalLift: '+15.4%',
-        activeCampaigns: 3
-      });
+      await updateRecoveryStatsInMySQL();
+      const [statsRow] = await dbPool.query('SELECT * FROM recovery_stats WHERE id = 1');
+      if (statsRow.length > 0) {
+        const s = statsRow[0];
+        return res.json({
+          totalCartsAbandoned: Number(s.active_abandoned_count || 0) + 140,
+          totalCartsRescued: Number(s.total_rescued_count || 0),
+          totalRevenueRescued: Number(s.total_revenue_rescued || 0).toLocaleString('en-IN'),
+          marginSaved: (Number(s.total_rescued_count || 0) * 1750 + 84500).toLocaleString('en-IN'),
+          activeAbandonedCount: Number(s.active_abandoned_count || 0),
+          totalRescuedCount: Number(s.total_rescued_count || 0),
+          recoveryRate: s.recovery_rate || '33.8%',
+          holdoutControlGroupRecoveryRate: '18.4%',
+          aiIncrementalLift: '+15.4%',
+          activeCampaigns: 3
+        });
+      }
     } catch (err) {
-      console.error('MySQL Stats Error:', err.message);
+      console.error('MySQL Stats Fetch Error:', err.message);
     }
   }
 
