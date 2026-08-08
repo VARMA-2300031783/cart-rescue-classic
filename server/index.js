@@ -61,7 +61,7 @@ async function initDatabase() {
       queueLimit: 0
     });
 
-    // Create JPA-aligned MySQL Tables
+    // Create JPA-aligned MySQL Tables with DEFAULT timestamp & discount
     await dbPool.query(`
       CREATE TABLE IF NOT EXISTS carts (
         id VARCHAR(255) PRIMARY KEY,
@@ -111,25 +111,30 @@ async function initDatabase() {
       );
     `);
 
+    // Auto-repair any existing NULL values in database columns
+    await dbPool.query('UPDATE carts SET abandoned_at = NOW() WHERE abandoned_at IS NULL;');
+    await dbPool.query('UPDATE carts SET discount_applied = 0 WHERE discount_applied IS NULL;');
+    await dbPool.query('UPDATE abandoned_carts SET abandoned_at = NOW() WHERE abandoned_at IS NULL;');
+
     // Insert Initial Demo Carts into MySQL if empty
     const [existing] = await dbPool.query('SELECT COUNT(*) as cnt FROM carts');
     if (existing[0].cnt === 0) {
       await dbPool.query(`
-        INSERT INTO carts (id, customer_name, customer_email, customer_phone, total_value, status, last_notification_sent, discount_applied) VALUES
-        ('cart-101', 'Sarah Jenkins', 'sarah.j@example.com', '+91 98765 43210', 360.00, 'abandoned', 'OFFER_UPI_RETRY_LINK', 0),
-        ('cart-102', 'David Miller', 'david.m@example.com', '+91 98765 12345', 44990.00, 'abandoned', 'MARGIN_BOUNDED_DISCOUNT (10% Off)', 10),
-        ('cart-103', 'Emma Watson', 'emma.w@example.com', '+91 98765 67890', 3999.00, 'rescued', 'WAIVE_SHIPPING_FEE', 0);
+        INSERT INTO carts (id, customer_name, customer_email, customer_phone, total_value, status, last_notification_sent, discount_applied, abandoned_at) VALUES
+        ('cart-101', 'Sarah Jenkins', 'sarah.j@example.com', '+91 98765 43210', 360.00, 'abandoned', 'OFFER_UPI_RETRY_LINK', 0, NOW()),
+        ('cart-102', 'David Miller', 'david.m@example.com', '+91 98765 12345', 44990.00, 'abandoned', 'MARGIN_BOUNDED_DISCOUNT (10% Off)', 10, NOW()),
+        ('cart-103', 'Emma Watson', 'emma.w@example.com', '+91 98765 67890', 3999.00, 'rescued', 'WAIVE_SHIPPING_FEE', 0, NOW());
       `);
 
       await dbPool.query(`
-        INSERT INTO abandoned_carts (id, customer_name, customer_email, customer_phone, total_value, status) VALUES
-        ('cart-101', 'Sarah Jenkins', 'sarah.j@example.com', '+91 98765 43210', 360.00, 'abandoned'),
-        ('cart-102', 'David Miller', 'david.m@example.com', '+91 98765 12345', 44990.00, 'abandoned');
+        INSERT INTO abandoned_carts (id, customer_name, customer_email, customer_phone, total_value, status, abandoned_at) VALUES
+        ('cart-101', 'Sarah Jenkins', 'sarah.j@example.com', '+91 98765 43210', 360.00, 'abandoned', NOW()),
+        ('cart-102', 'David Miller', 'david.m@example.com', '+91 98765 12345', 44990.00, 'abandoned', NOW());
       `);
 
       await dbPool.query(`
-        INSERT INTO rescued_sales (id, customer_name, customer_email, original_value, rescued_amount, discount_percent) VALUES
-        ('cart-103', 'Emma Watson', 'emma.w@example.com', 3999.00, 3999.00, 0);
+        INSERT INTO rescued_sales (id, customer_name, customer_email, original_value, rescued_amount, discount_percent, rescued_at) VALUES
+        ('cart-103', 'Emma Watson', 'emma.w@example.com', 3999.00, 3999.00, 0, NOW());
       `);
     }
 
@@ -237,28 +242,33 @@ app.post('/api/carts/abandon', async (req, res) => {
   let recommendedAction = 'DO_NOTHING';
   let actionReason = 'Do not intervene or offer discount! Customer will convert naturally without eroding margin.';
   let marginSaved = (parseFloat(totalValue) || 100.0) * 0.15;
+  let discountPercent = 0;
 
   if (hasPaymentError) {
     riskScore = 85;
     diagnosis = 'PAYMENT_FAILURE';
     recommendedAction = 'OFFER_UPI_RETRY_LINK';
     actionReason = 'Payment timeout detected on UPI gateway. Do not discount (payment issue, not price issue).';
+    discountPercent = 0;
   } else if (reachedShippingStep) {
     riskScore = 72;
     diagnosis = 'SURPRISE_SHIPPING';
     recommendedAction = 'WAIVE_SHIPPING_FEE';
     actionReason = 'Free shipping promo code FLATSIP applied.';
+    discountPercent = 0;
   } else if (askedForCOD) {
     riskScore = 65;
     diagnosis = 'NO_COD_AVAILABLE';
     recommendedAction = 'ENABLE_COD_PAYMENT';
     actionReason = 'Enable Cash on Delivery option for this customer session.';
+    discountPercent = 0;
   } else if (tabSwitchCount > 1) {
     riskScore = 68;
     diagnosis = 'PRICE_SHOPPING';
     recommendedAction = 'MARGIN_BOUNDED_DISCOUNT';
     actionReason = 'Tab switching detected. Apply 10% coupon (RESCUE10).';
     marginSaved = (parseFloat(totalValue) || 100.0) * 0.05;
+    discountPercent = 10;
   }
 
   const cartId = `cart-${Date.now()}`;
@@ -270,11 +280,11 @@ app.post('/api/carts/abandon', async (req, res) => {
   if (dbPool) {
     try {
       await dbPool.query(
-        'INSERT INTO carts (id, customer_name, customer_email, customer_phone, total_value, status, last_notification_sent) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [cartId, name, email, phone, val, 'abandoned', recommendedAction]
+        'INSERT INTO carts (id, customer_name, customer_email, customer_phone, total_value, status, last_notification_sent, discount_applied, abandoned_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+        [cartId, name, email, phone, val, 'abandoned', recommendedAction, discountPercent]
       );
       await dbPool.query(
-        'INSERT INTO abandoned_carts (id, customer_name, customer_email, customer_phone, total_value, status) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT INTO abandoned_carts (id, customer_name, customer_email, customer_phone, total_value, status, abandoned_at) VALUES (?, ?, ?, ?, ?, ?, NOW())',
         [cartId, name, email, phone, val, 'abandoned']
       );
       await updateRecoveryStatsInMySQL();
@@ -296,7 +306,8 @@ app.post('/api/carts/abandon', async (req, res) => {
       diagnosis,
       recommendedAction,
       actionReason,
-      marginSaved: parseFloat(marginSaved.toFixed(2))
+      marginSaved: parseFloat(marginSaved.toFixed(2)),
+      discountApplied: discountPercent
     }
   });
 });
@@ -336,7 +347,7 @@ app.post('/api/carts/:id/complete', async (req, res) => {
         
         const finalVal = cart.total_value * (1 - (cart.discount_applied || 0) / 100);
         await dbPool.query(
-          'INSERT INTO rescued_sales (id, customer_name, customer_email, original_value, rescued_amount, discount_percent) VALUES (?, ?, ?, ?, ?, ?)',
+          'INSERT INTO rescued_sales (id, customer_name, customer_email, original_value, rescued_amount, discount_percent, rescued_at) VALUES (?, ?, ?, ?, ?, ?, NOW())',
           [id, cart.customer_name, cart.customer_email, cart.total_value, finalVal, cart.discount_applied || 0]
         );
         await updateRecoveryStatsInMySQL();
